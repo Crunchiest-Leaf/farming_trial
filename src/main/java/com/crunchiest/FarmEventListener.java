@@ -20,9 +20,15 @@ import java.util.logging.Logger;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.EventPriority;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 
 public class FarmEventListener implements Listener {
 
@@ -37,7 +43,7 @@ public class FarmEventListener implements Listener {
     private int[] DropCount(int tool_tier, int enchant_tier){
         
         int[] counts = new int[2];
-        int seed_count = 1 + enchant_tier;
+        int seed_count = 1 + enchant_tier;  // min drop one seed.
         int crop_count = tool_tier + enchant_tier;
 
         counts[0] = crop_count;
@@ -90,7 +96,7 @@ public class FarmEventListener implements Listener {
      */
     private void DamageHoe(ItemStack hoe, Player player)
     {
-        int damage_modifier = 1;
+        int damage_modifier = 1; // modify for changes to default durability
         org.bukkit.inventory.meta.Damageable dMeta = (org.bukkit.inventory.meta.Damageable) hoe.getItemMeta();
         int currentDura = dMeta.getDamage();
         int newDura = currentDura + damage_modifier;
@@ -105,6 +111,40 @@ public class FarmEventListener implements Listener {
         {
             player.playSound(player.getLocation(),Sound.ENTITY_ITEM_BREAK,1,1);
             hoe.setAmount(0);
+        }
+    }
+
+    /**
+     * SpawnNamedEntity:
+     * Method to spawn random entity
+     * on farming event roll.
+    */
+    private void SpawnNamedEntity(Block locBlock, EntityType entity, String name)
+    {
+        World world = locBlock.getWorld();
+        Entity villager = world.spawnEntity(locBlock.getLocation(), entity);
+        world.playSound(locBlock.getLocation(), Sound.ENTITY_WITCH_AMBIENT, 10, 1);
+        villager.setCustomName(name);
+    }
+
+    
+    /**
+     *  RandomFarmEvent:
+     *  Method to random roll table
+     *  a set of possible events.
+     *  MobDrops, ItemDrops.
+     */
+    private void RandomFarmEvent(Block block, Player player)
+    {
+        int randomNum = ThreadLocalRandom.current().nextInt(0, 10 + 1);
+        switch(randomNum)
+        {
+            case 0:
+                SpawnNamedEntity(block, EntityType.ZOMBIE_VILLAGER, "Undead Farmer");
+
+            // add cases for other events.
+            default:
+                ;;
         }
     }
 
@@ -210,6 +250,7 @@ public class FarmEventListener implements Listener {
                     int dropCounts[] = new int[2];
                     dropCounts = DropCount(hoe_tiers.get(heldItem.getType()), FortuneTier_toInteger(heldItem));
                     FarmDrops(crop_to_drop.get(blockType), dropCounts[0], crop_to_seed.get(blockType), dropCounts[1], player);
+                    RandomFarmEvent(block, player);
                     DamageHoe(heldItem, player);
                 }
             }
@@ -233,7 +274,7 @@ public class FarmEventListener implements Listener {
         if (Arrays.asList(crops).contains(blockType))
         {
             event.setCancelled(true);
-            block.setType(Material.AIR, true);
+            block.setType(Material.AIR, false);
             block.setBlockData(null);
         }
     }

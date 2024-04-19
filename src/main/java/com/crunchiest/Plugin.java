@@ -19,6 +19,8 @@ public class Plugin extends JavaPlugin
   {
     LOGGER.info("farming_trial enabled");
     getServer().getPluginManager().registerEvents(new FarmEventListener(), this);
+    getCommand("set_trampling").setExecutor(new FarmCommands());
+    getCommand("set_trampling").setTabCompleter(new FarmTabComplete());
   }
 
   public void onDisable()
