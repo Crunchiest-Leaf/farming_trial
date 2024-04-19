@@ -1,13 +1,29 @@
 package com.crunchiest;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * FARMING TRIAL PLUGIN
+ * ______                   _____    _       _ 
+ * |  ___|                 |_   _|  (_)     | |
+ * | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
+ * |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
+ * | || (_| | |  | | | | | | | | |  | | (_| | |
+ * \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
+ *
+ * duthor: Crunchiest_Leaf
+ *
+ * desc: Trial Plugin for LOTC java team
+ *       see link for outline.
+ * 
+ * link: https://docs.google.com/document/d/1zpQpmroUDSb7b6XRdxoifJIs6ig295lM0LOI0gdOvGk/edit#heading=h.h6zgogey5tcq
+ * 
+ */
 
 public class FarmTabComplete implements TabCompleter {
 
@@ -15,9 +31,9 @@ public class FarmTabComplete implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args)
     {
         /** 
-        /  Tab Complete Object, handles autofill of Farm commands
-        /  Locked to moderator only for security purposes.
-        /  permission: farm_trial.moderator.commands
+        *  Tab Complete Object, handles autofill of Farm commands
+        *  Locked to moderator only for security purposes.
+        *  permission: farm_trial.moderator.commands
         */
 
         Player player = (Player) sender;
