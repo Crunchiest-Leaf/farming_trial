@@ -329,7 +329,7 @@ public class FarmEventListener implements Listener {
         if (crop_to_seed.get(blockType) != null)
         {
             event.setCancelled(true);
-            block.setType(Material.AIR, false);
+            block.setType(Material.AIR, true);
             block.setBlockData(null);
         }
     }
@@ -346,7 +346,7 @@ public class FarmEventListener implements Listener {
 
         Block block = event.getBlock();
         Material blockAboveType = block.getRelative(BlockFace.UP).getType();
-        if (crop_to_seed.get(blockAboveType) != null)
+        if (crop_to_seed.get(blockAboveType) != null || (block.getType() == Material.FARMLAND))
         {
             event.setCancelled(true);
         }
