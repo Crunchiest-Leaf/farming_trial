@@ -120,7 +120,7 @@ public class FarmEventListener implements Listener {
         if(event.getAction() == Action.PHYSICAL) //physical interaction catches trampling
         {
             Block block = event.getClickedBlock();
-            if ((block == null)) //|| (event.getPlayer().hasPermission("farm_trial.trample.toggle")))
+            if ((block == null) || (event.getPlayer().hasPermission("farm_trial.trample.toggle")))
                 return;
 
             Material blockType = block.getType();
