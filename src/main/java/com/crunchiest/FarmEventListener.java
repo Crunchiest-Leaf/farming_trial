@@ -227,7 +227,7 @@ public class FarmEventListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerTrample(PlayerInteractEvent event)
     {   
         /** 
@@ -257,7 +257,7 @@ public class FarmEventListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerHoe(PlayerInteractEvent event)
     {
         /** 
@@ -346,7 +346,7 @@ public class FarmEventListener implements Listener {
 
         Block block = event.getBlock();
         Material blockAboveType = block.getRelative(BlockFace.UP).getType();
-        if (crop_to_seed.get(blockAboveType) != null || (block.getType() == Material.FARMLAND))
+        if (crop_to_seed.get(blockAboveType) != null)
         {
             event.setCancelled(true);
         }
@@ -366,7 +366,7 @@ public class FarmEventListener implements Listener {
         for (int i = 0; i < effectedBlocks.size(); i++)
         {
             Block checked = effectedBlocks.get(i);
-            if (crop_to_seed.get(checked.getType()) != null)
+            if (crop_to_seed.get(checked.getType()) != null || (checked.getType() == Material.FARMLAND))
             {
                 event.setCancelled(true);
             }
