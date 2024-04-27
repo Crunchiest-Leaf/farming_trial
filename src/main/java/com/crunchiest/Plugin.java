@@ -1,8 +1,8 @@
 package com.crunchiest;
 
+import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.logging.Logger;
 
 /**
  * FARMING TRIAL PLUGIN
