@@ -1,13 +1,13 @@
 name: farming_trial
 main: com.crunchiest.Plugin
-version: 0.1.4
+version: 0.1.6
 api-version: 1.18
 
 permissions:
-  farm_trial.trample.toggle:
+  farmtrial.toggletrampling:
     default: false
-check
+
 commands:
-  set_trampling:
+  toggle_trampling:
     description: allows moderators to toggle trampling for player.
     usage: /<command>

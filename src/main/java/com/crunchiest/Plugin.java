@@ -25,18 +25,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Plugin extends JavaPlugin
 {
   private static final Logger LOGGER=Logger.getLogger("farming_trial");
+
+  public PluginDataManager data;
+
   Plugin plugin = this;
 
-  public void onEnable()
-  {
-    LOGGER.info("farming_trial enabled");
-    getServer().getPluginManager().registerEvents(new FarmEventListener(), this);
-    getCommand("set_trampling").setExecutor(new FarmCommands());
-    getCommand("set_trampling").setTabCompleter(new FarmTabComplete());
+  public void onEnable() {
+    this.data = new PluginDataManager(plugin);
+    LOGGER.info("FarmingTrial enabled");
+    getServer().getPluginManager().registerEvents(new FarmEventListener(plugin), this);
+    getCommand("toggle_trampling").setExecutor(new FarmCommands(plugin));
+    getCommand("toggle_trampling").setTabCompleter(new FarmTabComplete());
   }
 
   public void onDisable()
   {
-    LOGGER.info("farming_trial disabled");
+    LOGGER.info("FarmingTrial disabled");
   }
 }

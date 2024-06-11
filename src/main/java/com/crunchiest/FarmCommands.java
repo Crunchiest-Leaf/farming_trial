@@ -1,11 +1,14 @@
 package com.crunchiest;
 
+import com.crunchiest.Plugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.entity.Player;
 
@@ -28,7 +31,11 @@ import org.bukkit.entity.Player;
  */
 
 public class FarmCommands implements CommandExecutor{
-  private static final Logger LOGGER=Logger.getLogger("farming_trial");
+  private Plugin plugin;
+
+  public FarmCommands(Plugin plugin) {
+    this.plugin = plugin;
+  }
   
   /** 
    *  commandFeedback: 
@@ -52,26 +59,41 @@ public class FarmCommands implements CommandExecutor{
      *  Locked to moderator only for security purposes.
      *  permission: farm_trial.moderator.commands
      */
-    
-    Player player = (Player) sender;
+    if (args.length < 1) {
+      commandFeedback(sender, ChatColor.GREEN + "Command usage: /toggle_trampling <user_name>");
+      return true;
+    }
+
+    if (!sender.hasPermission("farmtrial.toggletrampling")) {
+      return true;
+    }
+
     Player target = Bukkit.getPlayer(args[0]);
-    if (cmd.getName().equalsIgnoreCase("set_trampling")) {
-      if (player.hasPermission("farm_trial.moderator.commands")) {
-        if ((args.length >= 2) && (target != null) && ("true".equals(args[1]) 
-            || "false".equals(args[1]))) { 
-          //piggyback off of lp commands.
-          String commandOut = ("lp user " + args[0] + " permission set farm_trial.trample.toggle " 
-                              + args[1]);                 
-          Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), commandOut);
-          commandFeedback(sender, "Trampling set to " + args[1] + " for " + args[0]); 
-          
+    ConfigurationSection players = plugin.data.getPlayerConfig().getConfigurationSection("players");
+    boolean state = false;
+    if (cmd.getName().equalsIgnoreCase("toggle_trampling")) {
+      if (target != null) {
+        if (players == null) {
+          plugin.data.getPlayerConfig().set("players." + target.getUniqueId().toString(), 
+              target.getName());
+          state = true;
+        } else if (players.contains(target.getUniqueId().toString())) {
+          plugin.data.getPlayerConfig().set("players." 
+              + target.getUniqueId().toString(), null);
+          state = false;
         } else {
-          commandFeedback(sender, "/set_trampling <player> <boolean>");
+          plugin.data.getPlayerConfig().set("players." + target.getUniqueId().toString(), 
+              target.getName());
+          state = true;
         }
+        plugin.data.savePlayerConfig();
       } else {
-        commandFeedback(sender, ChatColor.RED + "You Don't Have permission to do that.");
+        commandFeedback(sender, "Player '" + args[0] + "' not found.");
+        plugin.getLogger().log(Level.WARNING, "Player '" + args[0] + "' not found.");
+        return false;
       }
     }
-    return false;
+    commandFeedback(sender, "Player '" + args[0] + "' Crop trampling toggled to: " + String.valueOf(state));
+    return true;
   }
 }

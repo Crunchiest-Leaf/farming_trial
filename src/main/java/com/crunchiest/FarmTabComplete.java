@@ -38,7 +38,7 @@ public class FarmTabComplete implements TabCompleter {
     */
     
     Player player = (Player) sender;
-    if (player.hasPermission("farm_trial.moderator.commands")) {
+    if (player.hasPermission("farmtrial.toggletrampling")) {
       if (args.length == 1) {
         // returns list of online players
         List<String> playerNames = new ArrayList<>();
@@ -47,14 +47,7 @@ public class FarmTabComplete implements TabCompleter {
         for (int playerX = 0; playerX < players.length; playerX++) {
           playerNames.add(players[playerX].getName());
         }
-        
         return playerNames;
-      } else if (args.length == 2) {
-        // returns boolean true / false
-        List<String> bools = new ArrayList<>();
-        bools.add("true");
-        bools.add("false");
-        return bools;
       }
     }
     return null;
