@@ -1,0 +1,52 @@
+# Java and Maven specific ignores
+target/
+*.class
+*.log
+*.jar
+*.war
+*.ear
+*.iml
+*.ipr
+*.iws
+*.swp
+
+# Maven specific ignores
+mvnw
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# IntelliJ IDEA specific ignores
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse specific ignores
+.settings/
+.project
+.classpath
+
+# NetBeans specific ignores
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code specific ignores
+.vscode/
+
+# OS specific ignores
+.DS_Store
+Thumbs.db
+
+# Log, lock and temporary files
+*.log
+*.lock
+*.tmp
+
+# Bukkit plugin specific ignores
+plugins/
+server.log

@@ -44,9 +44,7 @@ import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockDataMeta;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.util.ChatPaginator;
+
 
 
 /**
@@ -78,11 +76,21 @@ public class FarmEventListener implements Listener {
   private HashMap<Material, Float> cropToMult = new HashMap<Material, Float>();
 
   // startup constructor - unpacks farming data & puts into hashmaps for custom enums.
+
+  /**
+   * FarmEventListener:
+   * constructor, used to initialise plugin startup data.
+   *
+   * @param plugin - instance of main plugin class.
+   */
   public FarmEventListener(Plugin plugin) {
     this.plugin = plugin;
-    ConfigurationSection tools = plugin.data.getFarmingConfig().getConfigurationSection("tools");
-    ConfigurationSection crops = plugin.data.getFarmingConfig().getConfigurationSection("crops");
+    ConfigurationSection tools = plugin.data.getFarmingConfig()
+          .getConfigurationSection("tools");
+    ConfigurationSection crops = plugin.data.getFarmingConfig()
+          .getConfigurationSection("crops");
 
+    plugin.getLogger().log(Level.INFO, "----------------");
     plugin.getLogger().log(Level.INFO, "- LOADING TOOLS -");
     for (String key : tools.getKeys(false)) {
       try {
@@ -94,15 +102,18 @@ public class FarmEventListener implements Listener {
         plugin.getLogger().log(Level.WARNING, "Failed to add tool: " + key);
       }
     }
-    plugin.getLogger().log(Level.INFO, "----------------");
 
+    plugin.getLogger().log(Level.INFO, "----------------");
     plugin.getLogger().log(Level.INFO, "- LOADING CROPS -");
     for (String key : crops.getKeys(false)) {
       try {
         Material crop = Material.valueOf(key.toUpperCase());
-        Material seed = Material.valueOf(plugin.data.getFarmingConfig().getString("crops." + key + ".seed").toUpperCase());
-        Material drop = Material.valueOf(plugin.data.getFarmingConfig().getString("crops." + key + ".drop").toUpperCase());
-        Float mult = Float.parseFloat(plugin.data.getFarmingConfig().getString("crops." + key + ".multiplier"));
+        Material seed = Material.valueOf(plugin.data.getFarmingConfig()
+              .getString("crops." + key + ".seed").toUpperCase());
+        Material drop = Material.valueOf(plugin.data.getFarmingConfig()
+              .getString("crops." + key + ".drop").toUpperCase());
+        Float mult = Float.parseFloat(plugin.data.getFarmingConfig()
+              .getString("crops." + key + ".multiplier"));
         cropToSeed.put(crop, seed);
         cropToDrop.put(crop, drop);
         cropToMult.put(crop, mult);
@@ -360,12 +371,13 @@ public class FarmEventListener implements Listener {
       if (blockType == Material.FARMLAND) {
         // cancels trample event...
         event.setUseInteractedBlock(org.bukkit.event.Event.Result.DENY);
-        event.setCancelled(true);
-        
-        // ... and resets block data.
-        block.setType(blockType);
+        // get pre-event block data.
         Farmland farmland = (Farmland) block.getBlockData();
-        farmland.setMoisture(7);
+        int moistureLevel = farmland.getMoisture();
+        // cancels trample event...
+        event.setCancelled(true);
+        // ... and resets block data.
+        farmland.setMoisture(moistureLevel);
         block.setBlockData(farmland);
       }
     }
@@ -381,12 +393,13 @@ public class FarmEventListener implements Listener {
     Block block = event.getBlock();
     Material blockType = block.getType();
     if (blockType == Material.FARMLAND) {
+      // get pre-event block data.
+      Farmland farmland = (Farmland) block.getBlockData();
+      int moistureLevel = farmland.getMoisture();
       // cancels trample event...
       event.setCancelled(true);
       // ... and resets block data.
-      block.setType(blockType);
-      Farmland farmland = (Farmland) block.getBlockData();
-      farmland.setMoisture(7);
+      farmland.setMoisture(moistureLevel);
       block.setBlockData(farmland);
     }
   }
@@ -412,7 +425,7 @@ public class FarmEventListener implements Listener {
   }
   
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  public void onPlayerHoe(PlayerInteractEvent event) {
+  public void onPlayerHoe(BlockBreakEvent event) {
 
     /**
      * onPlayerHoe:
@@ -426,8 +439,8 @@ public class FarmEventListener implements Listener {
     
     ItemStack heldItem = player.getInventory().getItemInMainHand();
     
-    if ((event.getAction() == Action.LEFT_CLICK_BLOCK)) {
-      Block block = event.getClickedBlock();
+    if ((event.getPlayer() != null)) {
+      Block block = event.getBlock();
       if (block == null) {
         return;
       }
@@ -438,26 +451,21 @@ public class FarmEventListener implements Listener {
       // filters out other non-farm blocks
       if (cropToSeed.get(blockType) != null) {
         Ageable ageable = (Ageable) block.getBlockData();
-        event.setCancelled(true);
         
         if (ageable.getAge() < ageable.getMaximumAge() 
             || (hoeTiers.get(heldItem.getType()) == null)) {
           // if crop not grown, or not using hoe
           // break crop, returning seeds.
-          block.setType(Material.AIR, true);
-          block.setBlockData(block.getBlockData());
           if (blockTypeDrop != Material.valueOf("AIR")) {
             farmDrops(cropToDrop.get(blockTypeDrop), 0, cropToSeed.get(blockTypeDrop), 
                 1, cropToMult.get(blockType), block);
           }
-
         } else {
           // if crop grown, and using hoe
           // Harvest crop, and reset to baby crop.
           block.setType(blockType);
           ageable.setAge(0);
           block.setBlockData(ageable);
-          
           // handle drops & hoe durability change.
           int[] dropCounts = new int[2];
           dropCounts = dropCount(hoeTiers.get(heldItem.getType()), fortuneTierToInteger(heldItem));
@@ -466,6 +474,7 @@ public class FarmEventListener implements Listener {
           randomFarmEvent(block, player);
           damageHoe(heldItem, player);
         }
+        event.setDropItems(false);
       }
     }
   }
@@ -487,7 +496,6 @@ public class FarmEventListener implements Listener {
           farmDrops(cropToDrop.get(blockType), 0, cropToSeed.get(blockType), 
               1, cropToMult.get(blockType), block);
         }
-        event.setCancelled(true);
         block.setType(Material.AIR, true);
         block.setBlockData(block.getBlockData());
       }
@@ -504,7 +512,12 @@ public class FarmEventListener implements Listener {
     Block block = event.getBlockClicked();
     Block blockAbove = block.getRelative(BlockFace.UP);
     if (block.getType() == Material.FARMLAND && cropToDrop.get(blockAbove.getType()) != null) {
-      event.setCancelled(true);
+      if (blockAbove.getType() != Material.valueOf("AIR")) {
+        farmDrops(cropToDrop.get(blockAbove.getType()), 0, cropToSeed.get(blockAbove.getType()), 
+            1, cropToMult.get(blockAbove.getType()), block);
+      }
+      blockAbove.setType(Material.AIR);
+      blockAbove.setBlockData(blockAbove.getBlockData());
     }
   }
   
@@ -558,7 +571,7 @@ public class FarmEventListener implements Listener {
      *  Prevents piston from pushing itself, or other blocks into crops.
      *  by cancelling piston extent event.
      */
-    
+
     List<Block> effectedBlocks = new ArrayList<Block>(event.getBlocks());
     for (int i = 0; i < effectedBlocks.size(); i++) {
       Block checked = effectedBlocks.get(i);
