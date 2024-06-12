@@ -386,7 +386,12 @@ public class FarmEventListener implements Listener {
      */
     if (event.getAction() == Action.PHYSICAL) { // physical interaction catches trampling
       Block block = event.getClickedBlock();
-      Boolean permission = plugin.data.getPlayerConfig().getConfigurationSection("players").contains(event.getPlayer().getUniqueId().toString());
+      boolean permission = false;
+      try {
+        permission = plugin.data.getPlayerConfig().getConfigurationSection("players").contains(event.getPlayer().getUniqueId().toString());
+      } catch (Exception e) {
+        plugin.getLogger().log(Level.WARNING, "Problem with Player Config, please check formatting!");
+      }
       if ((block == null) || (permission)) {
         return;
       }
