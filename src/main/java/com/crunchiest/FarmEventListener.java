@@ -50,7 +50,7 @@ import org.bukkit.inventory.ItemStack;
  * | || (_| | |  | | | | | | | | |  | | (_| | |
  * \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
  *
- * duthor: Crunchiest_Leaf
+ * Author: Crunchiest_Leaf
  *
  * desc: Trial Plugin for LOTC java team
  *       see link for outline.
@@ -268,7 +268,7 @@ public class FarmEventListener implements Listener {
 
   /**
    * potatoRain:
-   * Method to spray an explosion of item from ground
+   * Method to make potatoes rain from sky
    * on farming event roll.
    * 
    * @param player - block at given farm location.

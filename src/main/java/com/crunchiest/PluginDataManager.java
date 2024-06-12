@@ -17,7 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
  * | || (_| | |  | | | | | | | | |  | | (_| | |
  * \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
  *
- * duthor: Crunchiest_Leaf
+ * Author: Crunchiest_Leaf
  *
  * desc: Trial Plugin for LOTC java team
  *       see link for outline.
