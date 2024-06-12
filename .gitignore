@@ -11,7 +11,7 @@ target/
 
 # Maven specific ignores
 mvnw
-.mvn/wrapper/maven-wrapper.jar
+#.mvn/wrapper/maven-wrapper.jar
 .mvn/wrapper/maven-wrapper.properties
 
 # IntelliJ IDEA specific ignores
