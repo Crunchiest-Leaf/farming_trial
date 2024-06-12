@@ -13,8 +13,8 @@ tools:
 
 # configuration for crops. 
 # usage - 
-# crops:
-#   <crop>:
+# crops: 
+#   <crop>: //material name for crop block//
 #     seed: <seed>
 #     drop: <drop>
 crops:

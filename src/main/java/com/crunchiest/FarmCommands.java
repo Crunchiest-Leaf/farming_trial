@@ -1,15 +1,12 @@
 package com.crunchiest;
 
-import com.crunchiest.Plugin;
+import java.util.logging.Level;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.entity.Player;
 
 /**
@@ -31,9 +28,9 @@ import org.bukkit.entity.Player;
  */
 
 public class FarmCommands implements CommandExecutor{
-  private Plugin plugin;
+  private FarmingTrial plugin;
 
-  public FarmCommands(Plugin plugin) {
+  public FarmCommands(FarmingTrial plugin) {
     this.plugin = plugin;
   }
   
@@ -57,7 +54,7 @@ public class FarmCommands implements CommandExecutor{
     /** 
      *  onCommand, handles event that Farm commands are called
      *  Locked to moderator only for security purposes.
-     *  permission: farm_trial.moderator.commands
+     *  permission: farmtrial.toggletrampling
      */
     if (args.length < 1) {
       commandFeedback(sender, ChatColor.GREEN + "Command usage: /toggle_trampling <user_name>");
@@ -90,10 +87,11 @@ public class FarmCommands implements CommandExecutor{
       } else {
         commandFeedback(sender, "Player '" + args[0] + "' not found.");
         plugin.getLogger().log(Level.WARNING, "Player '" + args[0] + "' not found.");
-        return false;
+        return true;
       }
     }
     commandFeedback(sender, "Player '" + args[0] + "' Crop trampling toggled to: " + String.valueOf(state));
     return true;
   }
+  
 }
