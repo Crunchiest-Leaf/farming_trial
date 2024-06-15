@@ -1,4 +1,4 @@
-package com.crunchiest;
+package com.crunchiest.completion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-
+import com.crunchiest.FarmingTrial;
+import com.crunchiest.data.FarmingPotionManager;
 
 /**
  * FARMING TRIAL PLUGIN
@@ -27,8 +28,16 @@ import org.bukkit.entity.Player;
  * 
  */
 
-public class FarmTabComplete implements TabCompleter {
-  
+public class GivePotionTabComplete implements TabCompleter {
+
+  FarmingTrial plugin;
+  FarmingPotionManager potions;
+
+  public GivePotionTabComplete(FarmingTrial plugin) {
+    this.plugin = plugin;
+    this.potions = plugin.getFarmingPotionManager();
+  }
+
   @Override
   public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
    /** 
@@ -38,7 +47,7 @@ public class FarmTabComplete implements TabCompleter {
     */
     
     Player player = (Player) sender;
-    if (player.hasPermission("farmtrial.toggletrampling")) {
+    if (player.hasPermission("farmtrial.givepotion")) {
       if (args.length == 1) {
         // returns list of online players
         List<String> playerNames = new ArrayList<>();
@@ -49,9 +58,12 @@ public class FarmTabComplete implements TabCompleter {
         }
         return playerNames;
       }
+      if (args.length == 2) {
+        List<String> availablePotions = potions.getAllCustomPotionIds();
+        return availablePotions;
+      }
     }
     return null;
     
   }
-  
 }

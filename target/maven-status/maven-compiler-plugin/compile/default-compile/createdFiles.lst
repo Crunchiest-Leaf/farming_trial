@@ -1,5 +1,11 @@
-com\crunchiest\FarmEventListener.class
-com\crunchiest\PluginDataManager.class
-com\crunchiest\FarmTabComplete.class
+com\crunchiest\data\FarmingPotionManager.class
+com\crunchiest\commands\GiveFarmingPotionCommand.class
+com\crunchiest\completion\ToggleTramplingTabComplete.class
+com\crunchiest\events\FarmEventListener.class
 com\crunchiest\FarmingTrial.class
-com\crunchiest\FarmCommands.class
+com\crunchiest\data\FarmingPotionManager$CustomPotion.class
+com\crunchiest\events\FarmingPotionEventListener.class
+com\crunchiest\data\FarmingDataManager.class
+com\crunchiest\data\PluginConfigManager.class
+com\crunchiest\commands\ToggleTramplingCommand.class
+com\crunchiest\completion\GivePotionTabComplete.class

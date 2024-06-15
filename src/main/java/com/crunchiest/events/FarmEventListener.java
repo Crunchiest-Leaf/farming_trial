@@ -1,11 +1,8 @@
-package com.crunchiest;
+package com.crunchiest.events;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -19,7 +16,6 @@ import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Dispenser;
 import org.bukkit.block.data.type.Farmland;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -40,6 +36,10 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+
+import com.crunchiest.FarmingTrial;
+import com.crunchiest.data.FarmingDataManager;
+import com.crunchiest.data.PluginConfigManager;
 
 
 
@@ -64,12 +64,10 @@ import org.bukkit.inventory.meta.Damageable;
 public class FarmEventListener implements Listener {
   
   private FarmingTrial plugin;
+  private FarmingDataManager farmData;
+  private PluginConfigManager pluginData;
   
-  // hashmaps for configurable enums
-  private HashMap<Material, Integer> hoeTiers = new HashMap<Material, Integer>();
-  private HashMap<Material, Material> cropToSeed = new HashMap<Material, Material>();
-  private HashMap<Material, Material> cropToDrop = new HashMap<Material, Material>();
-  private HashMap<Material, Float> cropToMult = new HashMap<Material, Float>();
+  
   
   // startup constructor - unpacks farming data & puts into hashmaps for custom enums.
   
@@ -81,68 +79,9 @@ public class FarmEventListener implements Listener {
   */
   public FarmEventListener(FarmingTrial plugin) {
     this.plugin = plugin;
-    loadTools();
-    loadCrops();
-    
+    this.farmData = plugin.getFarmingDataManager();
+    this.pluginData = plugin.getPluginDataManager();
   }
-  
-  private void loadTools() {
-    plugin.getLogger().log(Level.INFO, "---------------------");
-    plugin.getLogger().log(Level.INFO, "- - LOADING TOOLS - -");
-    ConfigurationSection tools = plugin.data.getFarmingConfig().getConfigurationSection("tools");
-    if (tools == null) {
-      plugin.getLogger().log(Level.WARNING, "Section 'tools' not found in configuration.");
-      return;
-    }
-    
-    for (String key : tools.getKeys(false)) {
-      try {
-        Material tool = Material.valueOf(key.toUpperCase());
-        int value = plugin.data.getFarmingConfig().getInt("tools." + key);
-        hoeTiers.put(tool, value);
-        plugin.getLogger().log(Level.INFO, "Tool added: " + key);
-      } catch (IllegalArgumentException e) {
-        plugin.getLogger().log(Level.WARNING, "Failed to add tool: " + key);
-      }
-    }
-    plugin.getLogger().log(Level.INFO, "- - TOOLS  LOADED - -");
-    plugin.getLogger().log(Level.INFO, "---------------------");
-  }
-  
-  private void loadCrops() {
-    plugin.getLogger().log(Level.INFO, "- - LOADING CROPS - -");
-    ConfigurationSection crops = plugin.data.getFarmingConfig().getConfigurationSection("crops");
-    if (crops == null) {
-      plugin.getLogger().log(Level.WARNING, "Section 'crops' not found in configuration.");
-      return;
-    }
-    
-    for (String key : crops.getKeys(false)) {
-      try {
-        Material crop = Material.valueOf(key.toUpperCase());
-        String seedKey = "crops." + key + ".seed";
-        String dropKey = "crops." + key + ".drop";
-        String multKey = "crops." + key + ".multiplier";
-        
-        Material seed = Material.valueOf(plugin.data.getFarmingConfig()
-            .getString(seedKey).toUpperCase());
-        Material drop = Material.valueOf(plugin.data.getFarmingConfig()
-              .getString(dropKey).toUpperCase());
-        float mult = Float.parseFloat(plugin.data.getFarmingConfig().getString(multKey));
-        
-        cropToSeed.put(crop, seed);
-        cropToDrop.put(crop, drop);
-        cropToMult.put(crop, mult);
-        
-        plugin.getLogger().log(Level.INFO, "Crop added: " + key);
-      } catch (Exception e) {
-        plugin.getLogger().log(Level.WARNING, "Failed to add crop: " + key);
-      }
-    }
-    plugin.getLogger().log(Level.INFO, "- - CROPS  LOADED - -");
-    plugin.getLogger().log(Level.INFO, "---------------------");
-  }
-  
   
   /**
   * dropCount:
@@ -178,14 +117,14 @@ public class FarmEventListener implements Listener {
     Location loc = block.getLocation();
     if (seedCount > 0) {
       world.dropItemNaturally(loc, new ItemStack(seed, 
-            (int) Math.ceil((double) (seedCount * mult))));
+          (int) Math.ceil((double) (seedCount * mult))));
     }
     if (cropCount > 0) {
       world.dropItemNaturally(loc, new ItemStack(crop, 
-          (int) Math.ceil((double) (seedCount * mult))));
+            (int) Math.ceil((double) (seedCount * mult))));
     }
   }
-
+  
   /**
   * Gets the level of a specific enchantment on an item.
   *
@@ -231,7 +170,7 @@ public class FarmEventListener implements Listener {
   * @param player - player object.
   * @return void
   */
-
+  
   private void fixHoe(ItemStack hoe, Player player) {
     Damageable meta = (Damageable) hoe.getItemMeta();
     meta.setDamage(0);
@@ -262,7 +201,7 @@ public class FarmEventListener implements Listener {
       }
     }, 10L);
     world.playSound(loc, Sound.ENTITY_EVOKER_CAST_SPELL, 10, 1);
-}
+  }
   
   /**
   * SpawnNamedEntity:
@@ -348,8 +287,8 @@ public class FarmEventListener implements Listener {
       Block block = event.getClickedBlock();
       boolean permission = false;
       try {
-        permission = plugin.data.getPlayerConfig().getConfigurationSection("players")
-            .contains(event.getPlayer().getUniqueId().toString());
+        permission = pluginData.getPlayerConfig().getConfigurationSection("players")
+        .contains(event.getPlayer().getUniqueId().toString());
       } catch (Exception e) {
         plugin.getLogger().log(Level.WARNING, 
             "Problem with Player Config, please check formatting!");
@@ -409,7 +348,7 @@ public class FarmEventListener implements Listener {
     List<Block> effectedBlocks = new ArrayList<Block>();
     effectedBlocks.addAll(event.blockList());
     for (Block block : effectedBlocks) {
-      if (cropToSeed.get(block.getType()) != null) { 
+      if (farmData.getCropToSeed(block.getType()) != null) { 
         block.setType(Material.AIR);
         block.setBlockData(block.getBlockData());
       }
@@ -425,7 +364,7 @@ public class FarmEventListener implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPlayerHoe(BlockBreakEvent event) {
     
-   /**
+    /**
     * onPlayerHoe:
     * Event Listener to handle the interaction of the player with farm-blocks;
     * lets fully grown crops harvest with hoe, otherwise refund seed when broken.
@@ -446,17 +385,17 @@ public class FarmEventListener implements Listener {
     Material blockType = block.getType();
     Material blockTypeDrop = blockType;
     
-    if (cropToSeed.containsKey(blockType)) {
+    if (farmData.getCropToSeed(blockType) != null) {
       Ageable ageable = (Ageable) block.getBlockData();
       int age = ageable.getAge();
       int maxAge = ageable.getMaximumAge();
       
-      if (age < maxAge || hoeTiers.get(heldItemType) == null) {
+      if (age < maxAge || farmData.checkHoeExists(heldItemType) == false) {
         // Crop not fully grown or not using a hoe
         if (blockTypeDrop != Material.AIR) {
-          farmDrops(cropToDrop.get(blockTypeDrop), 0, 
-                cropToSeed.get(blockTypeDrop), 1, 
-                cropToMult.get(blockType), block);
+          farmDrops(farmData.getCropToDrop(blockTypeDrop), 0, 
+                farmData.getCropToSeed(blockTypeDrop), 1, 
+              farmData.getCropMult(blockType), block);
         }
       } else {
         // Crop fully grown and using a hoe
@@ -464,10 +403,11 @@ public class FarmEventListener implements Listener {
         ageable.setAge(0);
         block.setBlockData(ageable);
         
-        int[] dropCounts = dropCount(hoeTiers.get(heldItemType), 
+        int[] dropCounts = dropCount(farmData.getHoeTier(heldItemType), 
             getEnchantmentLevel(heldItem, Enchantment.LOOT_BONUS_BLOCKS));
-        farmDrops(cropToDrop.get(blockType), dropCounts[0], cropToSeed.get(blockType), 
-            dropCounts[1], cropToMult.get(blockType), block);
+        farmDrops(farmData.getCropToDrop(blockType), dropCounts[0], 
+            farmData.getCropToSeed(blockType), 
+            dropCounts[1], farmData.getCropMult(blockType), block);
         randomFarmEvent(block, player);
         damageHoe(heldItem, player);
       }
@@ -488,12 +428,12 @@ public class FarmEventListener implements Listener {
       Block block = event.getToBlock();
       Material blockType = block.getType();
       
-      if (cropToSeed.get(blockType) != null) {
+      if (farmData.getCropToSeed(blockType) != null) {
         event.setCancelled(true);
         // refund seed
         if (blockType != Material.valueOf("AIR")) {
-          farmDrops(cropToDrop.get(blockType), 0, cropToSeed.get(blockType), 
-              1, cropToMult.get(blockType), block);
+          farmDrops(farmData.getCropToDrop(blockType), 0, farmData.getCropToSeed(blockType), 
+              1, farmData.getCropMult(blockType), block);
         }
         block.setType(Material.AIR, true);
         block.setBlockData(block.getBlockData());
@@ -510,11 +450,12 @@ public class FarmEventListener implements Listener {
     */
     Block block = event.getBlockClicked();
     Block blockAbove = block.getRelative(BlockFace.UP);
-    if (block.getType() == Material.FARMLAND && cropToDrop.get(blockAbove.getType()) != null) {
+    if (block.getType() == Material.FARMLAND && farmData.getCropToDrop(blockAbove.getType()) != null) {
       // refund seed
       if (blockAbove.getType() != Material.valueOf("AIR")) {
-        farmDrops(cropToDrop.get(blockAbove.getType()), 0, cropToSeed.get(blockAbove.getType()), 
-             1, cropToMult.get(blockAbove.getType()), block);
+        farmDrops(farmData.getCropToDrop(blockAbove.getType()),     
+            0, farmData.getCropToSeed(blockAbove.getType()), 
+            1, farmData.getCropMult(blockAbove.getType()), block);
       }
       blockAbove.setType(Material.AIR);
       blockAbove.setBlockData(blockAbove.getBlockData());
@@ -532,12 +473,12 @@ public class FarmEventListener implements Listener {
     ItemStack dispensedItem = event.getItem();
     Block block = event.getBlock();
     if (dispensedItem.getType() == Material.WATER_BUCKET 
-         || dispensedItem.getType() == Material.LAVA_BUCKET) {
+          || dispensedItem.getType() == Material.LAVA_BUCKET) {
       if (block.getType() == Material.DISPENSER) {
         Dispenser dispenser = (Dispenser) block.getBlockData();
         Directional direction = (Directional) dispenser;
         Block targetBlock = block.getRelative(direction.getFacing());
-        if (cropToDrop.get(targetBlock.getType()) != null) {
+        if (farmData.getCropToDrop(targetBlock.getType()) != null) {
           event.setCancelled(true);
         }
       } 
@@ -556,13 +497,14 @@ public class FarmEventListener implements Listener {
     Block block = event.getBlock();
     Block blockAbove = block.getRelative(BlockFace.UP);
     Material blockAboveType = blockAbove.getType();
-    if (cropToSeed.get(blockAboveType) != null) {
+    if (farmData.getCropToSeed(blockAboveType) != null) {
       blockAbove.setType(Material.AIR, true);
       blockAbove.setBlockData(blockAbove.getBlockData());
       // refund seed
       if (blockAboveType != Material.valueOf("AIR")) {
-        farmDrops(cropToDrop.get(blockAboveType), 0, cropToSeed.get(blockAboveType), 
-             1, cropToMult.get(blockAboveType), blockAbove);
+        farmDrops(farmData.getCropToDrop(blockAboveType), 
+            0, farmData.getCropToSeed(blockAboveType), 
+            1, farmData.getCropMult(blockAboveType), blockAbove);
       }
     }
   }
@@ -579,7 +521,8 @@ public class FarmEventListener implements Listener {
     List<Block> effectedBlocks = new ArrayList<Block>(event.getBlocks());
     for (int i = 0; i < effectedBlocks.size(); i++) {
       Block checked = effectedBlocks.get(i);
-      if (cropToSeed.get(checked.getType()) != null || (checked.getType() == Material.FARMLAND)) {
+      if (farmData.getCropToSeed(checked.getType()) != null 
+          || (checked.getType() == Material.FARMLAND)) {
         event.setCancelled(true);
       }
     }
@@ -597,7 +540,8 @@ public class FarmEventListener implements Listener {
     List<Block> effectedBlocks = new ArrayList<Block>(event.getBlocks());
     for (int i = 0; i < effectedBlocks.size(); i++) {
       Block checked = effectedBlocks.get(i);
-      if (cropToSeed.get(checked.getType()) != null || (checked.getType() == Material.FARMLAND)) {
+      if (farmData.getCropToSeed(checked.getType()) != null 
+            || (checked.getType() == Material.FARMLAND)) {
         event.setCancelled(true);
       }
     }

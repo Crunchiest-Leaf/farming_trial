@@ -11,3 +11,8 @@ commands:
   toggle_trampling:
     description: allows moderators to toggle trampling for player.
     usage: /<command>
+
+  give_potion:
+    description: Gives custom Registered Potion to given player
+    usage: /<command>
+

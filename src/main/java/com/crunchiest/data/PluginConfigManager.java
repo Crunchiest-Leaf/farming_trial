@@ -1,4 +1,4 @@
-package com.crunchiest;
+package com.crunchiest.data;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,12 +7,27 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import com.crunchiest.FarmingTrial;
 
 /**
-* PluginDataManager:
-* Manages configuration files for the plugin.
-*/
-public class PluginDataManager {
+ * FARMING TRIAL PLUGIN
+ * ______                   _____    _       _ 
+ * |  ___|                 |_   _|  (_)     | |
+ * | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
+ * |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
+ * | || (_| | |  | | | | | | | | |  | | (_| | |
+ * \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
+ *
+ * Author: Crunchiest_Leaf
+ *
+ * desc: Trial Plugin for LOTC java team
+ *       see link for outline.
+ * 
+ * link: https://docs.google.com/document/d/1zpQpmroUDSb7b6XRdxoifJIs6ig295lM0LOI0gdOvGk/edit#heading=h.h6zgogey5tcq
+ * 
+ */
+
+public class PluginConfigManager {
   
   private FarmingTrial plugin;
   private File playerConfigFile;
@@ -20,7 +35,7 @@ public class PluginDataManager {
   private FileConfiguration playerConfig;
   private FileConfiguration farmingConfig;
   
-  public PluginDataManager(FarmingTrial plugin) {
+  public PluginConfigManager(FarmingTrial plugin) {
     this.plugin = plugin;
     this.playerConfigFile = new File(plugin.getDataFolder(), "playerData.yml");
     this.farmingConfigFile = new File(plugin.getDataFolder(), "farmingData.yml");

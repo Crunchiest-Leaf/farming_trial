@@ -1,4 +1,4 @@
-package com.crunchiest;
+package com.crunchiest.commands;
 
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
@@ -8,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import com.crunchiest.FarmingTrial;
+import com.crunchiest.data.PluginConfigManager;
 
 /**
  * FARMING TRIAL PLUGIN
@@ -27,12 +29,17 @@ import org.bukkit.entity.Player;
  * 
  */
 
-public class FarmCommands implements CommandExecutor{
+public class ToggleTramplingCommand implements CommandExecutor{
   private FarmingTrial plugin;
+  private PluginConfigManager pluginData;
 
-  public FarmCommands(FarmingTrial plugin) {
+  public ToggleTramplingCommand(FarmingTrial plugin) {
     this.plugin = plugin;
+    this.pluginData = this.plugin.getPluginDataManager();
   }
+
+  private void commandFeedback(CommandSender sender, String feedback) {
+    sender.sendMessage(ChatColor.RED + feedback);}
   
   /** 
    *  commandFeedback: 
@@ -44,9 +51,7 @@ public class FarmCommands implements CommandExecutor{
    *  @return void       
    */
   
-  private void commandFeedback(CommandSender sender, String feedback) {
-    sender.sendMessage(ChatColor.RED + feedback);
-  }
+  
   
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -66,24 +71,24 @@ public class FarmCommands implements CommandExecutor{
     }
 
     Player target = Bukkit.getPlayer(args[0]);
-    ConfigurationSection players = plugin.data.getPlayerConfig().getConfigurationSection("players");
+    ConfigurationSection players = pluginData.getPlayerConfig().getConfigurationSection("players");
     boolean state = false;
     if (cmd.getName().equalsIgnoreCase("toggle_trampling")) {
       if (target != null) {
         if (players == null) {
-          plugin.data.getPlayerConfig().set("players." + target.getUniqueId().toString(), 
+          pluginData.getPlayerConfig().set("players." + target.getUniqueId().toString(), 
               target.getName());
           state = true;
         } else if (players.contains(target.getUniqueId().toString())) {
-          plugin.data.getPlayerConfig().set("players." 
+          pluginData.getPlayerConfig().set("players." 
               + target.getUniqueId().toString(), null);
           state = false;
         } else {
-          plugin.data.getPlayerConfig().set("players." + target.getUniqueId().toString(), 
+          pluginData.getPlayerConfig().set("players." + target.getUniqueId().toString(), 
               target.getName());
           state = true;
         }
-        plugin.data.savePlayerConfig();
+        pluginData.savePlayerConfig();
       } else {
         commandFeedback(sender, "Player '" + args[0] + "' not found.");
         plugin.getLogger().log(Level.WARNING, "Player '" + args[0] + "' not found.");
