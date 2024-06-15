@@ -34,6 +34,12 @@ public class FarmingDataManager {
   private HashMap<Material, Float> cropToMult = new HashMap<Material, Float>();
   private PluginConfigManager data;
 
+  /** 
+   * FarmingDataManager: 
+   * Constructor.
+   *
+   * @param plugin main plugin instance.
+   */
   public FarmingDataManager(FarmingTrial plugin) {
     this.plugin = plugin;
     this.data = plugin.getPluginDataManager();
@@ -41,6 +47,10 @@ public class FarmingDataManager {
     loadCrops();
   }
   
+  /** 
+   * loadTools: 
+   * loads in tool data from yml, putting into hashmap.
+   */
   private void loadTools() {
     plugin.getLogger().log(Level.INFO, "---------------------");
     plugin.getLogger().log(Level.INFO, "- - LOADING TOOLS - -");
@@ -64,6 +74,10 @@ public class FarmingDataManager {
     plugin.getLogger().log(Level.INFO, "---------------------");
   }
   
+  /** 
+   * loadCrops: 
+   * loads in crops data from yml, putting into hashmaps.
+   */
   private void loadCrops() {
     plugin.getLogger().log(Level.INFO, "- - LOADING CROPS - -");
     ConfigurationSection crops = data.getFarmingConfig().getConfigurationSection("crops");
@@ -98,10 +112,26 @@ public class FarmingDataManager {
     plugin.getLogger().log(Level.INFO, "---------------------");
   }
 
+  
+  /** 
+   * getCropToSeed:
+   * returns seed associated with registered crop.
+   *
+   * @param crop crop to search.
+   * @return Material
+   */
   public Material getCropToSeed(Material crop) {
     return cropToSeed.get(crop);
   }
 
+  
+  /** 
+   * checkCropExists:
+   * returns whether given crop is registered.
+   *
+   * @param crop crop to search.
+   * @return boolean
+   */
   public boolean checkCropExists(Material crop) {
     if (cropToSeed.get(crop) != null) {
       return true;
@@ -109,14 +139,36 @@ public class FarmingDataManager {
     return false;
   }
 
+  /** 
+   * getCropToDrop:
+   * returns drop associated with registered crop.
+   *
+   * @param crop crop to search.
+   * @return Material
+   */
   public Material getCropToDrop(Material crop) {
     return cropToDrop.get(crop);
   }
 
+  
+  /** 
+   * getHoeTier:
+   * returns tier associated with registered hoe.
+   *
+   * @param hoe hoe to search.
+   * @return int
+   */
   public int getHoeTier(Material hoe) {
     return hoeTiers.get(hoe);
   }
 
+  /** 
+   * checkHoeExists:
+   * returns whether given hoe is registered.
+   *
+   * @param hoe hoe to search.
+   * @return boolean
+   */
   public boolean checkHoeExists(Material hoe) {
     if (hoeTiers.get(hoe) != null) {
       return true;
@@ -124,6 +176,13 @@ public class FarmingDataManager {
     return false;
   }
 
+  /** 
+   * getCropMult:
+   * returns mult associated with registered crop.
+   *
+   * @param crop crop to search.
+   * @return float
+   */
   public float getCropMult(Material crop) {
     return cropToMult.get(crop);
   }

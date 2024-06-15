@@ -11,16 +11,12 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 
@@ -47,7 +43,12 @@ public class FarmingPotionEventListener implements Listener {
   private FarmingPotionManager potions;
   private FarmingDataManager farmData;
   
-  
+  /** 
+  * FarmingPotionEventListener:
+  * Constructor.
+  *
+  * @param plugin main plugin instance.
+  */
   public FarmingPotionEventListener(FarmingTrial plugin) {
     this.plugin = plugin;
     this.potions = plugin.getFarmingPotionManager();
@@ -57,7 +58,11 @@ public class FarmingPotionEventListener implements Listener {
   /** 
   * getBlocksRadius:
   * returns list of blocks
-  * in radius around given block
+  * in radius around given block.
+  *
+  * @param origin origin block hit by potion.
+  * @param radius radius of potion effect.
+  * @return ArrayList of blocks effected.
   */
   private ArrayList<Block> getBlocksRadius(Block origin, int radius){
     ArrayList<Block> blocks = new ArrayList<Block>();
@@ -77,9 +82,11 @@ public class FarmingPotionEventListener implements Listener {
   }
   
   /** 
-  * getBlocksRadius:
-  * returns list of blocks
-  * in radius around given block
+  * onPotionOfGrowth:
+  * Event handler.
+  * Manages use of POTION_OF_GROWTH
+  *
+  * @param event projectile hit event.
   */
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -103,9 +110,16 @@ public class FarmingPotionEventListener implements Listener {
     }
   }
 
+  /** 
+  * onPotionOfHarvesting:
+  * Event handler.
+  * Manages use of POTION_OF_HARVESTING
+  *
+  * @param event projectile hit event.
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPotionOfHarvesting(ProjectileHitEvent event) {
-    CustomPotion customPotion = processCustomPotion(event, "POTION_OF_GROWTH");
+    CustomPotion customPotion = processCustomPotion(event, "POTION_OF_HARVESTING");
     if (customPotion != null) {
       int potionRadius = customPotion.getPotionRadius();
       Block origin = event.getHitBlock();
@@ -122,6 +136,16 @@ public class FarmingPotionEventListener implements Listener {
     }
   }
   
+  /** 
+  * processCustomPotion:
+  * processes custom item for validation.
+  * ensures custom potion is registered, and of chosen type.
+  *
+  *
+  * @param event projectile hit event.
+  * @param potionKey key of registered potion type to be validated.
+  * @return CustomPotion. if not null, valid.
+  */
   private CustomPotion processCustomPotion(ProjectileHitEvent event, String potionKey) {
     
     if (!(event.getEntity() instanceof ThrownPotion)) {

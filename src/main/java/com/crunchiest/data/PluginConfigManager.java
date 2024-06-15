@@ -1,5 +1,6 @@
 package com.crunchiest.data;
 
+import com.crunchiest.FarmingTrial;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +8,6 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import com.crunchiest.FarmingTrial;
 
 /**
  * FARMING TRIAL PLUGIN
@@ -34,7 +34,13 @@ public class PluginConfigManager {
   private File farmingConfigFile;
   private FileConfiguration playerConfig;
   private FileConfiguration farmingConfig;
-  
+
+  /**
+  * PluginConfigManager:
+  * handles loading of yml config data.
+  *
+  * @param plugin main plugin instance.
+  */
   public PluginConfigManager(FarmingTrial plugin) {
     this.plugin = plugin;
     this.playerConfigFile = new File(plugin.getDataFolder(), "playerData.yml");
@@ -44,9 +50,8 @@ public class PluginConfigManager {
   }
   
   /**
+  * reloadConfig: 
   * Reloads configuration files.
-  * 
-  * @return void
   */
   public void reloadConfig() {
     this.playerConfig = YamlConfiguration.loadConfiguration(playerConfigFile);
@@ -58,6 +63,7 @@ public class PluginConfigManager {
   }
   
   /**
+  * getPlayerConfig:
   * Retrieves the player configuration.
   *
   * @return Player configuration
@@ -67,6 +73,7 @@ public class PluginConfigManager {
   }
   
   /**
+  * getFarmingConfig:
   * Retrieves the farming configuration.
   *
   * @return Farming configuration
@@ -76,27 +83,24 @@ public class PluginConfigManager {
   }
   
   /**
+  * savePlayerConfig:
   * Saves the player configuration to disk.
-  *
-  * @return void
   */
   public void savePlayerConfig() {
     saveConfig(playerConfig, playerConfigFile, "PLAYER CONFIG SAVE FAILED!");
   }
   
   /**
+  * saveFarmingConfig: 
   * Saves the farming configuration to disk.
-  *
-  * @return void
   */
   public void saveFarmingConfig() {
     saveConfig(farmingConfig, farmingConfigFile, "FARMING CONFIG SAVE FAILED!");
   }
   
   /**
+  * saveDefaultConfigs: 
   * Saves default configurations from resources if they don't exist.
-  *
-  * @return void
   */
   private void saveDefaultConfigs() {
     saveResource("playerData.yml", playerConfigFile);
@@ -104,6 +108,7 @@ public class PluginConfigManager {
   }
   
   /**
+  * saveResource:
   * Saves a default configuration file from the plugin resources.
   *
   * @param resourcePath Path to the resource in the plugin JAR
@@ -117,6 +122,7 @@ public class PluginConfigManager {
   }
   
   /**
+  * loadDefaultConfig:
   * Loads default configuration from resources if not already existing.
   *
   * @param fileName   Name of the file to load

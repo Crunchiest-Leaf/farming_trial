@@ -38,10 +38,28 @@ public class GiveFarmingPotionCommand implements CommandExecutor {
     this.potions = this.plugin.getFarmingPotionManager();
   }
 
+  
+  /** 
+   * commandFeedback:
+   * Command feedback to user.
+   *
+   * @param sender sender of command.
+   * @param feedback feedback message string.
+   */
   private void commandFeedback(CommandSender sender, String feedback) {
     sender.sendMessage(ChatColor.RED + feedback);
   }
   
+  /** 
+   * onCommand: 
+   * Command executor for giving potions.
+   *
+   * @param sender command sender.
+   * @param cmd command.
+   * @param label command label.
+   * @param args command args.
+   * @return boolean success.
+   */
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     
@@ -51,7 +69,8 @@ public class GiveFarmingPotionCommand implements CommandExecutor {
     *  permission: farmtrial.toggletrampling
     */
     if (args.length < 1) {
-      commandFeedback(sender, ChatColor.GREEN + "Command usage: /give_potion <user_name> <registered potion ID>");
+      commandFeedback(sender, ChatColor.GREEN 
+          + "Command usage: /give_potion <user_name> <registered potion ID>");
       return true;
     }
     

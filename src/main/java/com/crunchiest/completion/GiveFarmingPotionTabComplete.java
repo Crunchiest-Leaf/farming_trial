@@ -28,18 +28,19 @@ import com.crunchiest.data.FarmingPotionManager;
  * 
  */
 
-public class GivePotionTabComplete implements TabCompleter {
+public class GiveFarmingPotionTabComplete implements TabCompleter {
 
   FarmingTrial plugin;
   FarmingPotionManager potions;
 
-  public GivePotionTabComplete(FarmingTrial plugin) {
+  public GiveFarmingPotionTabComplete(FarmingTrial plugin) {
     this.plugin = plugin;
     this.potions = plugin.getFarmingPotionManager();
   }
 
   @Override
-  public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+  public List<String> onTabComplete(CommandSender sender, Command cmd, 
+      String alias, String[] args) {
    /** 
     *  Tab Complete Object, handles autofill of Farm commands
     *  Locked to moderator only for security purposes.

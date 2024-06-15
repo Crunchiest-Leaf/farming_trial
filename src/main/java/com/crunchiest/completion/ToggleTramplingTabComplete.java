@@ -30,7 +30,8 @@ import org.bukkit.entity.Player;
 public class ToggleTramplingTabComplete implements TabCompleter {
   
   @Override
-  public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+  public List<String> onTabComplete(CommandSender sender, Command cmd, 
+      String alias, String[] args) {
    /** 
     *  Tab Complete Object, handles autofill of Farm commands
     *  Locked to moderator only for security purposes.

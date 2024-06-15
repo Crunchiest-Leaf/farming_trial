@@ -2,7 +2,7 @@ package com.crunchiest;
 
 import com.crunchiest.commands.GiveFarmingPotionCommand;
 import com.crunchiest.commands.ToggleTramplingCommand;
-import com.crunchiest.completion.GivePotionTabComplete;
+import com.crunchiest.completion.GiveFarmingPotionTabComplete;
 import com.crunchiest.completion.ToggleTramplingTabComplete;
 import com.crunchiest.data.FarmingDataManager;
 import com.crunchiest.data.FarmingPotionManager;
@@ -39,35 +39,48 @@ public class FarmingTrial extends JavaPlugin
   private FarmingDataManager farmingDataManager;
   
   FarmingTrial plugin = this;
-
-  public FarmingTrial() {
-    loadCustomPotions();
-  }
   
+  /** 
+   * onEnable: 
+   * runs on plugin enable.
+   * runs initialisation process of 
+   * plugin components.
+   */
   @Override
   public void onEnable() {
-    loadPluginConfigs();
-    loadFarmingData();
-    loadCustomPotions();
-    registerEvents();
-    registerCommands();
-
+    reloadPlugin();
     LOGGER.info("FarmingTrial enabled");
   }
   
+  /** 
+   * onDisable: 
+   * runs on plugin disable.
+   */
   @Override
   public void onDisable() {
     LOGGER.info("FarmingTrial disabled");
   }
 
+  /** 
+   * loadFarmingData: 
+   * loads farming data manager.
+   */
   private void loadFarmingData() {
     farmingDataManager = new FarmingDataManager(plugin);
   }
 
+  /** 
+   * loadPluginConfigs: 
+   * loads config manager.
+   */
   private void loadPluginConfigs() {
     data = new PluginConfigManager(plugin);
   }
 
+  /** 
+   * loadCustomPotions: 
+   * loads Potion manager, and registers custom potions.
+   */
   private void loadCustomPotions() {
     // Custom Potions! Custom Mechanics! Very Cool!
     potionManager = new FarmingPotionManager(plugin);
@@ -77,26 +90,59 @@ public class FarmingTrial extends JavaPlugin
     potionManager.registerCustomPotion("Potion of Harvesting", "POTION_OF_HARVESTING", true, 5);
   }
 
+  /** 
+   * registerCommands: 
+   * registers plugin command executors & completion.
+   */
   private void registerCommands() {
     getCommand("toggle_trampling").setExecutor(new ToggleTramplingCommand(plugin));
     getCommand("toggle_trampling").setTabCompleter(new ToggleTramplingTabComplete());
     getCommand("give_potion").setExecutor(new GiveFarmingPotionCommand(plugin));
-    getCommand("give_potion").setTabCompleter(new GivePotionTabComplete(plugin));
+    getCommand("give_potion").setTabCompleter(new GiveFarmingPotionTabComplete(plugin));
   }
 
+  /** 
+   * registerEvents: 
+   * registers plugin event listeners.
+   */
   public void registerEvents() {
     getServer().getPluginManager().registerEvents(new FarmEventListener(plugin), this);
     getServer().getPluginManager().registerEvents(new FarmingPotionEventListener(plugin), this);
   }
 
+  /** 
+   * reloadPlugin: 
+   * handles loading of plugin components.
+   * used on startup, and when reloading.
+   */
+  public void reloadPlugin() {
+    loadPluginConfigs();
+    loadFarmingData();
+    loadCustomPotions();
+    registerEvents();
+    registerCommands();
+  }
+
+  /** 
+   * getFarmingDataManager: 
+   * getter for main farm Data manager.
+   */
   public FarmingDataManager getFarmingDataManager() {
     return farmingDataManager;
   }
 
+  /** 
+   * getPluginDataManager: 
+   * getter for main plugin Data manager.
+   */
   public PluginConfigManager getPluginDataManager() {
     return data;
   }
 
+  /** 
+   * getFarmingPotionManager: 
+   * getter for potion Data manager.
+   */
   public FarmingPotionManager getFarmingPotionManager() {
     return potionManager;
   }

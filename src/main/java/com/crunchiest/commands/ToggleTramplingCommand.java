@@ -1,5 +1,7 @@
 package com.crunchiest.commands;
 
+import com.crunchiest.FarmingTrial;
+import com.crunchiest.data.PluginConfigManager;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -8,8 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import com.crunchiest.FarmingTrial;
-import com.crunchiest.data.PluginConfigManager;
 
 /**
  * FARMING TRIAL PLUGIN
@@ -29,7 +29,7 @@ import com.crunchiest.data.PluginConfigManager;
  * 
  */
 
-public class ToggleTramplingCommand implements CommandExecutor{
+public class ToggleTramplingCommand implements CommandExecutor {
   private FarmingTrial plugin;
   private PluginConfigManager pluginData;
 
@@ -38,8 +38,6 @@ public class ToggleTramplingCommand implements CommandExecutor{
     this.pluginData = this.plugin.getPluginDataManager();
   }
 
-  private void commandFeedback(CommandSender sender, String feedback) {
-    sender.sendMessage(ChatColor.RED + feedback);}
   
   /** 
    *  commandFeedback: 
@@ -50,6 +48,9 @@ public class ToggleTramplingCommand implements CommandExecutor{
    *  @param feedback - string message to be sent.
    *  @return void       
    */
+  private void commandFeedback(CommandSender sender, String feedback) {
+    sender.sendMessage(ChatColor.RED + feedback);
+  }
   
   
   
@@ -95,7 +96,8 @@ public class ToggleTramplingCommand implements CommandExecutor{
         return true;
       }
     }
-    commandFeedback(sender, "Player '" + args[0] + "' Crop trampling toggled to: " + String.valueOf(state));
+    commandFeedback(sender, "Player '" + args[0] + 
+        "' Crop trampling toggled to: " + String.valueOf(state));
     return true;
   }
   
