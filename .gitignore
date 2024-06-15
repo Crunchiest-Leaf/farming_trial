@@ -1,5 +1,15 @@
 # Java and Maven specific ignores
 target/
+*.class
+*.log
+*.war
+*.ear
+*.iml
+*.ipr
+*.iws
+*.swp
+*.lst
+
 # Maven specific ignores
 mvnw
 #.mvn/wrapper/maven-wrapper.jar
