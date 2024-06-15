@@ -35,7 +35,7 @@ public class ToggleTramplingTabComplete implements TabCompleter {
    /** 
     *  Tab Complete Object, handles autofill of Farm commands
     *  Locked to moderator only for security purposes.
-    *  permission: farm_trial.toggletrampling
+    *  permission: farmtrial.toggletrampling
     */
     
     Player player = (Player) sender;

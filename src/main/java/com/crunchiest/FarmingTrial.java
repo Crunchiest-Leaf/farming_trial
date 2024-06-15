@@ -1,8 +1,10 @@
 package com.crunchiest;
 
 import com.crunchiest.commands.GiveFarmingPotionCommand;
+import com.crunchiest.commands.ReloadFarmTrialCommand;
 import com.crunchiest.commands.ToggleTramplingCommand;
 import com.crunchiest.completion.GiveFarmingPotionTabComplete;
+import com.crunchiest.completion.ReloadFarmTrialTabComplete;
 import com.crunchiest.completion.ToggleTramplingTabComplete;
 import com.crunchiest.data.FarmingDataManager;
 import com.crunchiest.data.FarmingPotionManager;
@@ -31,8 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 * 
 */
 
-public class FarmingTrial extends JavaPlugin
-{
+public class FarmingTrial extends JavaPlugin {
   private static final Logger LOGGER = Logger.getLogger("FarmingTrial");
   private PluginConfigManager data;
   private FarmingPotionManager potionManager;
@@ -99,6 +100,8 @@ public class FarmingTrial extends JavaPlugin
     getCommand("toggle_trampling").setTabCompleter(new ToggleTramplingTabComplete());
     getCommand("give_potion").setExecutor(new GiveFarmingPotionCommand(plugin));
     getCommand("give_potion").setTabCompleter(new GiveFarmingPotionTabComplete(plugin));
+    getCommand("farmtrial").setExecutor(new ReloadFarmTrialCommand(plugin));
+    getCommand("farmtrial").setTabCompleter(new ReloadFarmTrialTabComplete());
   }
 
   /** 

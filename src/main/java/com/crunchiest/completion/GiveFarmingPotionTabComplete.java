@@ -42,9 +42,9 @@ public class GiveFarmingPotionTabComplete implements TabCompleter {
   public List<String> onTabComplete(CommandSender sender, Command cmd, 
       String alias, String[] args) {
    /** 
-    *  Tab Complete Object, handles autofill of Farm commands
+    *  Tab Complete Object, handles autofill of give potion command.
     *  Locked to moderator only for security purposes.
-    *  permission: farm_trial.toggletrampling
+    *  permission: farmtrial.givepotion
     */
     
     Player player = (Player) sender;
