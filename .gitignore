@@ -37,8 +37,7 @@ nbdist/
 .nb-gradle/
 
 # VS Code specific ignores
-.vscode/
-*.json
+.vscode/**
 
 # OS specific ignores
 .DS_Store
