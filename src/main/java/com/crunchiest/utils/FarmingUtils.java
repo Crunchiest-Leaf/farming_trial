@@ -102,8 +102,8 @@ public class FarmingUtils {
   * restores durability to max.
   * (used for random event).
   *
-  * @param hoe    - hoe itemstack object.
-  * @param player - player object.
+  * @param hoe    hoe itemstack object.
+  * @param player interacting player.
   * @return void
   */
   public static void fixHoe(ItemStack hoe, Player player) {
@@ -119,7 +119,7 @@ public class FarmingUtils {
   * Method to make potatoes rain from sky
   * on farming event roll.
   *
-  * @param player - block at given farm location.
+  * @param player block at given farm location.
   * @return void
   */
   public static void potatoRain(Player player, FarmingTrial plugin) {
@@ -176,8 +176,9 @@ public class FarmingUtils {
   * MobDrops
   * todo: ItemDrops.
   *
-  * @param block  - block at given farm location.
-  * @param player - player object.
+  * @param block  block at given farm location.
+  * @param player interacting player.
+  * @param plugin main plugin instance.
   * @return void
   */
   public static void randomFarmEvent(Block block, Player player, FarmingTrial plugin) {
