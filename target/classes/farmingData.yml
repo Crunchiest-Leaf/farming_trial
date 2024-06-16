@@ -10,6 +10,7 @@ tools:
   golden_hoe: 2
   diamond_hoe: 3
   netherite_hoe: 3
+  stick: 1
 
 # configuration for crops. 
 # usage - 
