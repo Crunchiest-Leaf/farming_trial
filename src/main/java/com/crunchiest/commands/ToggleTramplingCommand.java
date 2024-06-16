@@ -92,7 +92,6 @@ public class ToggleTramplingCommand implements CommandExecutor {
         pluginData.savePlayerConfig();
       } else {
         commandFeedback(sender, "Player '" + args[0] + "' not found.");
-        plugin.logWarning("Player '" + args[0] + "' not found.");
         return true;
       }
     }

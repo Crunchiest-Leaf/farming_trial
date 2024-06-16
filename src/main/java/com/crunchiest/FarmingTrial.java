@@ -177,6 +177,5 @@ public class FarmingTrial extends JavaPlugin {
   public void logWarning(String message){
     LOGGER.log(Level.WARNING, message);
   }
-
-
+  
 }

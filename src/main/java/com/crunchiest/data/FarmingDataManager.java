@@ -146,10 +146,7 @@ public class FarmingDataManager {
    * @return boolean
    */
   public boolean checkCropExists(Material crop) {
-    if (cropToSeed.get(crop) != null) {
-      return true;
-    }
-    return false;
+    return cropToSeed.get(crop) != null ? true : false;
   }
 
   /** 
@@ -183,10 +180,7 @@ public class FarmingDataManager {
    * @return boolean
    */
   public boolean checkHoeExists(Material hoe) {
-    if (hoeTiers.get(hoe) != null) {
-      return true;
-    }
-    return false;
+    return hoeTiers.get(hoe) != null ? true : false;
   }
 
   /** 
