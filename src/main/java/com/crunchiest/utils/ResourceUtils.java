@@ -1,13 +1,15 @@
 package com.crunchiest.utils;
 
+import com.crunchiest.FarmingTrial;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.crunchiest.FarmingTrial;
-
+/**
+* Utility methods for resource relevant tasks.
+*/
 public class ResourceUtils {
   /**
   * Copies README.md from resources to the plugin's data folder if it doesn't already exist.

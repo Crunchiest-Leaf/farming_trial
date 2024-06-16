@@ -125,13 +125,20 @@ public class FarmingTrial extends JavaPlugin {
   public void loadPlugin() {
     logInfo(initialised ? "Re-loading Farming Plugin!" : "Loading Farming Plugin!");
     initialised = true;
+
+    // load in plugin data / configs.
     loadPluginConfigs();
     loadFarmingData();
     loadCustomPotions();
+
+    /* clear previously registered events 
+     * and re-register them. */
     HandlerList.unregisterAll(this);
     registerEvents();
     registerCommands();
-    loadReadMe();
+
+    //unpack readme from jar to plugin folder.
+    copyReadmeToPluginFolder();
   }
 
   /** 
@@ -159,6 +166,14 @@ public class FarmingTrial extends JavaPlugin {
   }
 
   /** 
+   * copyReadmeToPluginFolder: 
+   * Copies README.md to the plugin folder from JAR resources.
+   */
+  public void copyReadmeToPluginFolder() {
+    ResourceUtils.copyReadmeToPluginFolder(plugin);
+  }
+
+  /** 
    * logInfo: 
    * console log message, at info level.
    *
@@ -176,15 +191,6 @@ public class FarmingTrial extends JavaPlugin {
    */
   public void logWarning(String message) {
     LOGGER.log(Level.WARNING, message);
-  }
-
-  /** 
-   * loadReadMe: 
-   * copies README.md to plugin folder
-   * from JAR resources.
-   */
-  public void loadReadMe() {
-    ResourceUtils.copyReadmeToPluginFolder(plugin);
   }
 
 }

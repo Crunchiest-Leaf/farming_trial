@@ -1,6 +1,7 @@
 package com.crunchiest.utils;
 
 import com.crunchiest.FarmingTrial;
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -17,6 +18,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
+/**
+* Utility methods for various Farming Related functions.
+*/
 public class FarmingUtils {
 
   /**
@@ -78,8 +82,8 @@ public class FarmingUtils {
   * of hoe used to farm.
   * Hoe breaks on max durability use.
   *
-  * @param hoe    - hoe itemstack object.
-  * @param player - player object.
+  * @param hoe hoe itemstack object.
+  * @param player player object.
   * @return void
   */
   public static void damageHoe(ItemStack hoe, Player player) {
@@ -102,7 +106,7 @@ public class FarmingUtils {
   * restores durability to max.
   * (used for random event).
   *
-  * @param hoe    hoe itemstack object.
+  * @param hoe hoe itemstack object.
   * @param player interacting player.
   * @return void
   */
@@ -143,9 +147,9 @@ public class FarmingUtils {
   * Method to spawn random entity
   * on farming event roll.
   *
-  * @param locBlock - block at given farm location.
-  * @param entity   - entity type to spawn.
-  * @param name     - name to give entity.
+  * @param locBlock block at given farm location.
+  * @param entity entity type to spawn.
+  * @param name name to give entity.
   * @return void
   */
   public static void spawnNamedEntity(Block locBlock, EntityType entity, String name) {
@@ -160,9 +164,9 @@ public class FarmingUtils {
   * control flow.
   * returns true if range satisfied.
   *
-  * @param min - minimum value in range.
-  * @param max - maximum value in range.
-  * @param val - value to test against.
+  * @param min minimum value in range.
+  * @param max maximum value in range.
+  * @param val value to test against.
   * @return boolean
   */
   public static boolean rangeCheck(int min, int max, int val) {
@@ -209,5 +213,40 @@ public class FarmingUtils {
       player.sendMessage(ChatColor.AQUA + "FISH?!");
       
     } //else if (rangeCheck(min, max, randomNum))
+  }
+
+  /** 
+  * getBlocksRadius:
+  * returns list of blocks
+  * in radius around given block.
+  *
+  * @param origin origin block hit by potion.
+  * @param radius radius of potion effect.
+  * @return ArrayList of blocks effected.
+  */
+  public static ArrayList<Block> getBlocksRadius(Block origin, int radius) {
+    ArrayList<Block> blocks = new ArrayList<>();
+    if (origin == null) {
+      return blocks;
+    }
+    
+    World world = origin.getWorld();
+    Location originLoc = origin.getLocation();
+    int minX = (int) (originLoc.getX() - radius);
+    int maxX = (int) (originLoc.getX() + radius);
+    int minY = (int) (originLoc.getY() - radius);
+    int maxY = (int) (originLoc.getY() + radius);
+    int minZ = (int) (originLoc.getZ() - radius);
+    int maxZ = (int) (originLoc.getZ() + radius);
+    
+    for (int x = minX; x <= maxX; x++) {
+      for (int y = minY; y <= maxY; y++) {
+        for (int z = minZ; z <= maxZ; z++) {
+          Location loc = new Location(world, x, y, z);
+          blocks.add(loc.getBlock());
+        }
+      }
+    }
+    return blocks;
   }
 }
