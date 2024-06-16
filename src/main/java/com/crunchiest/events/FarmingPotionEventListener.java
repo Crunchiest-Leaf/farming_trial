@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.ThrownPotion;
@@ -67,16 +68,26 @@ public class FarmingPotionEventListener implements Listener {
   * @param radius radius of potion effect.
   * @return ArrayList of blocks effected.
   */
-  private ArrayList<Block> getBlocksRadius(Block origin, int radius){
-    ArrayList<Block> blocks = new ArrayList<Block>();
+  private ArrayList<Block> getBlocksRadius(Block origin, int radius) {
+    ArrayList<Block> blocks = new ArrayList<>();
     if (origin == null) {
       plugin.getLogger().log(Level.SEVERE, "BLOCK NULL?!");
       return blocks;
     }
-    for(double x = origin.getLocation().getX() - radius; x <= origin.getLocation().getX() + radius; x++){
-      for(double y = origin.getLocation().getY() - radius; y <= origin.getLocation().getY() + radius; y++){
-        for(double z = origin.getLocation().getZ() - radius; z <= origin.getLocation().getZ() + radius; z++){
-          Location loc = new Location(origin.getWorld(), x, y, z);
+    
+    World world = origin.getWorld();
+    Location originLoc = origin.getLocation();
+    int minX = (int) (originLoc.getX() - radius);
+    int maxX = (int) (originLoc.getX() + radius);
+    int minY = (int) (originLoc.getY() - radius);
+    int maxY = (int) (originLoc.getY() + radius);
+    int minZ = (int) (originLoc.getZ() - radius);
+    int maxZ = (int) (originLoc.getZ() + radius);
+    
+    for (int x = minX; x <= maxX; x++) {
+      for (int y = minY; y <= maxY; y++) {
+        for (int z = minZ; z <= maxZ; z++) {
+          Location loc = new Location(world, x, y, z);
           blocks.add(loc.getBlock());
         }
       }

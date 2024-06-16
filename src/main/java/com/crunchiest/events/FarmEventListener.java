@@ -73,7 +73,7 @@ public class FarmEventListener implements Listener {
     this.pluginData = plugin.getPluginDataManager();
   }
   
-
+  
   
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPlayerTrample(PlayerInteractEvent event) {
@@ -135,69 +135,76 @@ public class FarmEventListener implements Listener {
   
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onEntityExplode(EntityExplodeEvent event) {
-    
-    /**
-    * onEntityExplode:
-    * event listener to grab entity explosions
-    * and cancel the damage to farm related blocks.
-    */
+    // Check if the event is already cancelled; if so, return early
     if (event.isCancelled()) {
       return;
     }
-    List<Block> effectedBlocks = new ArrayList<Block>();
-    effectedBlocks.addAll(event.blockList());
-    for (Block block : effectedBlocks) {
-      if (farmData.getCropToSeed(block.getType()) != null) { 
+    
+    // Create a list to store the blocks affected by the explosion
+    List<Block> affectedBlocks = new ArrayList<>(event.blockList());
+    
+    // Iterate over each affected block
+    for (Block block : affectedBlocks) {
+      // Check if the affected block corresponds to a registered crop
+      if (farmData.getCropToSeed(block.getType()) != null) {
+        // If it's a crop block, clear it without dropping items
         block.setType(Material.AIR);
         block.setBlockData(block.getBlockData());
       }
-      if (block.getType() == Material.FARMLAND) { 
+      
+      // Check if the affected block is farmland
+      if (block.getType() == Material.FARMLAND) {
+        // If it's farmland, clear the block above it without dropping items
         Block blockAbove = block.getRelative(BlockFace.UP);
         blockAbove.setType(Material.AIR);
         blockAbove.setBlockData(blockAbove.getBlockData());
       }
-      
     }
   }
   
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPlayerHoe(BlockBreakEvent event) {
-    
-    /**
-    * onPlayerHoe:
-    * Event Listener to handle the interaction of the player with farm-blocks;
-    * lets fully grown crops harvest with hoe, otherwise refund seed when broken.
-    * Harness for the Overall Farm interaction side of things.
-    */
+    // Retrieve the player who triggered the event
     Player player = event.getPlayer();
+    
+    // Ensure the player is valid; if not, return early
     if (player == null) {
       return;
     }
     
+    // Retrieve the item currently held in the player's main hand
     ItemStack heldItem = player.getInventory().getItemInMainHand();
     Material heldItemType = heldItem.getType();
+    
+    // Retrieve the block that was broken in the event
     Block block = event.getBlock();
+    
+    // Ensure the block is valid; if not, return early
     if (block == null) {
       return;
     }
     
+    // Determine the type of block that was broken
     Material blockType = block.getType();
-    Material blockTypeDrop = blockType;
     
+    // Check if the broken block corresponds to a registered crop
     if (farmData.getCropToSeed(blockType) != null) {
       Ageable ageable = (Ageable) block.getBlockData();
       int age = ageable.getAge();
       int maxAge = ageable.getMaximumAge();
       
-      if (age < maxAge || farmData.checkHoeExists(heldItemType) == false) {
-        // Crop not fully grown or not using a hoe
-        if (blockTypeDrop != Material.AIR) {
-          FarmingUtils.farmDrops(farmData.getCropToDrop(blockTypeDrop), 0, 
-                farmData.getCropToSeed(blockTypeDrop), 1, 
+      // Check if the crop is not fully grown or if the player is not using a valid hoe
+      if (age < maxAge || !farmData.checkHoeExists(heldItemType)) {
+        // If the crop is not fully grown or the player is not using a hoe,
+        // handle the drop and seed refund
+        if (blockType != Material.AIR) {
+          FarmingUtils.farmDrops(farmData.getCropToDrop(blockType), 0, 
+              farmData.getCropToSeed(blockType), 1, 
               farmData.getCropMult(blockType), block);
         }
       } else {
-        // Crop fully grown and using a hoe
+        // If the crop is fully grown and the player is using a valid hoe,
+        // handle the harvesting process and other related tasks
         block.setType(blockType);
         ageable.setAge(0);
         block.setBlockData(ageable);
@@ -205,11 +212,13 @@ public class FarmEventListener implements Listener {
         int[] dropCounts = FarmingUtils.dropCount(farmData.getHoeTier(heldItemType), 
             FarmingUtils.getEnchantmentLevel(heldItem, Enchantment.LOOT_BONUS_BLOCKS));
         FarmingUtils.farmDrops(farmData.getCropToDrop(blockType), dropCounts[0], 
-            farmData.getCropToSeed(blockType), 
-            dropCounts[1], farmData.getCropMult(blockType), block);
+            farmData.getCropToSeed(blockType), dropCounts[1], 
+            farmData.getCropMult(blockType), block);
         FarmingUtils.randomFarmEvent(block, player, plugin);
         FarmingUtils.damageHoe(heldItem, player);
       }
+      
+      // Prevent vanilla drops from occurring
       event.setDropItems(false);
     }
   }
@@ -273,7 +282,7 @@ public class FarmEventListener implements Listener {
     ItemStack dispensedItem = event.getItem();
     Block block = event.getBlock();
     if (dispensedItem.getType() == Material.WATER_BUCKET 
-          || dispensedItem.getType() == Material.LAVA_BUCKET) {
+        || dispensedItem.getType() == Material.LAVA_BUCKET) {
       if (block.getType() == Material.DISPENSER) {
         Dispenser dispenser = (Dispenser) block.getBlockData();
         Directional direction = (Directional) dispenser;
@@ -341,7 +350,7 @@ public class FarmEventListener implements Listener {
     for (int i = 0; i < effectedBlocks.size(); i++) {
       Block checked = effectedBlocks.get(i);
       if (farmData.getCropToSeed(checked.getType()) != null 
-            || (checked.getType() == Material.FARMLAND)) {
+           || (checked.getType() == Material.FARMLAND)) {
         event.setCancelled(true);
       }
     }

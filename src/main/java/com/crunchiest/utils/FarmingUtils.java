@@ -40,12 +40,12 @@ public class FarmingUtils {
   * Takes in Item Values and Player Loc
   * Drops Items at player Loc Naturally.
   *
-  * @param crop      - crop type to drop.
-  * @param cropCount - Amount of crop.
-  * @param seed      - seed type to drop.
-  * @param seedCount - Amount of seed.
-  * @param mult      - seed Multiplier.
-  * @param player    - player object.
+  * @param crop crop type to drop.
+  * @param cropCount Amount of crop.
+  * @param seed seed type to drop.
+  * @param seedCount Amount of seed.
+  * @param mult seed Multiplier.
+  * @param player player object.
   * @return void
   */
   public static void farmDrops(Material crop, int cropCount, Material seed, int seedCount, float mult, Block block) {
@@ -106,7 +106,6 @@ public class FarmingUtils {
   * @param player - player object.
   * @return void
   */
-  
   public static void fixHoe(ItemStack hoe, Player player) {
     Damageable meta = (Damageable) hoe.getItemMeta();
     meta.setDamage(0);
