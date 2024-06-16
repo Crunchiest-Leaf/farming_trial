@@ -113,10 +113,12 @@ Here is an example for the "Potion of Growth":
 ```java
 @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 public void onPotionOfGrowth(ProjectileHitEvent event) {
-    CustomPotion customPotion = processCustomPotion(event, "POTION_OF_GROWTH");
-    if (customPotion != null) {
-        // do stuff
+    CustomPotion customPotion = 
+        PotionEffectUtils.processCustomPotion(event, "POTION_OF_HARVESTING", plugin);
+    if (customPotion == null) {
+      return;
     }
+    // do stuff
 }
 ```
 
