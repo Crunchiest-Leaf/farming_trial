@@ -20,7 +20,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class PotionEffectUtils {
   
   /**
-  * Applies a growth effect to a block if it contains a crop that can be grown.
+  * Applies a growth effect to a block if it contains a registered crop that can be grown.
   *
   * @param block    The block to apply the growth effect to.
   * @param farmData Farming data manager containing crop information.
@@ -36,7 +36,7 @@ public class PotionEffectUtils {
   }
   
   /**
-  * Applies a harvesting effect to a block if it contains a mature crop.
+  * Applies a harvesting effect to a block if it contains a registered mature crop.
   *
   * @param block    The block to apply the harvesting effect to.
   * @param farmData Farming data manager containing crop information.
