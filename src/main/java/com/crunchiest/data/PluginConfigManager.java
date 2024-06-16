@@ -1,31 +1,28 @@
 package com.crunchiest.data;
 
 import com.crunchiest.FarmingTrial;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.logging.Level;
+import java.io.*;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
- * FARMING TRIAL PLUGIN
- * ______                   _____    _       _ 
- * |  ___|                 |_   _|  (_)     | |
- * | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
- * |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
- * | || (_| | |  | | | | | | | | |  | | (_| | |
- * \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
- *
- * Author: Crunchiest_Leaf
- *
- * desc: Trial Plugin for LOTC java team
- *       see link for outline.
- * 
- * link: https://docs.google.com/document/d/1zpQpmroUDSb7b6XRdxoifJIs6ig295lM0LOI0gdOvGk/edit#heading=h.h6zgogey5tcq
- * 
- */
+* FARMING TRIAL PLUGIN
+* ______                   _____    _       _ 
+* |  ___|                 |_   _|  (_)     | |
+* | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
+* |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
+* | || (_| | |  | | | | | | | | |  | | (_| | |
+* \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
+*
+* Author: Crunchiest_Leaf
+*
+* desc: Trial Plugin for LOTC java team
+*       see link for outline.
+* 
+* link: https://docs.google.com/document/d/1zpQpmroUDSb7b6XRdxoifJIs6ig295lM0LOI0gdOvGk/edit#heading=h.h6zgogey5tcq
+* 
+*/
 
 public class PluginConfigManager {
   
@@ -34,7 +31,7 @@ public class PluginConfigManager {
   private File farmingConfigFile;
   private FileConfiguration playerConfig;
   private FileConfiguration farmingConfig;
-
+  
   /**
   * PluginConfigManager:
   * handles loading of yml config data.
@@ -57,8 +54,6 @@ public class PluginConfigManager {
     plugin.logInfo("Loading Configs");
     this.playerConfig = YamlConfiguration.loadConfiguration(playerConfigFile);
     this.farmingConfig = YamlConfiguration.loadConfiguration(farmingConfigFile);
-    
-    // Load defaults from JAR if they don't exist
     loadDefaultConfig("playerData.yml", playerConfig);
     loadDefaultConfig("farmingData.yml", farmingConfig);
     plugin.logInfo("Configs Loaded");
@@ -134,8 +129,8 @@ public class PluginConfigManager {
   private void loadDefaultConfig(String fileName, FileConfiguration config) {
     InputStream inputStream = plugin.getResource(fileName);
     if (inputStream != null) {
-      YamlConfiguration defaultConfig = 
-          YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
+      YamlConfiguration defaultConfig =
+      YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
       config.setDefaults(defaultConfig);
     }
   }
@@ -153,8 +148,10 @@ public class PluginConfigManager {
       try {
         config.save(configFile);
       } catch (IOException e) {
-        plugin.getLogger().log(Level.SEVERE, errorMessage, e);
+        plugin.getLogger().severe(errorMessage);
+        e.printStackTrace();
       }
     }
   }
+  
 }

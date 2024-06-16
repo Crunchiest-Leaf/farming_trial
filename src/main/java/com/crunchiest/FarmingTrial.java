@@ -11,6 +11,8 @@ import com.crunchiest.data.FarmingPotionManager;
 import com.crunchiest.data.PluginConfigManager;
 import com.crunchiest.events.FarmEventListener;
 import com.crunchiest.events.FarmingPotionEventListener;
+import com.crunchiest.utils.ResourceUtils;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.event.HandlerList;
@@ -129,6 +131,7 @@ public class FarmingTrial extends JavaPlugin {
     HandlerList.unregisterAll(this);
     registerEvents();
     registerCommands();
+    loadReadMe();
   }
 
   /** 
@@ -174,6 +177,14 @@ public class FarmingTrial extends JavaPlugin {
   public void logWarning(String message) {
     LOGGER.log(Level.WARNING, message);
   }
-  
+
+  /** 
+   * loadReadMe: 
+   * copies README.md to plugin folder
+   * from JAR resources.
+   */
+  public void loadReadMe() {
+    ResourceUtils.copyReadmeToPluginFolder(plugin);
+  }
 
 }
