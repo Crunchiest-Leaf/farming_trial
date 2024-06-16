@@ -22,13 +22,13 @@ Overall, players should only be able to interact with the registered crops
 through the use of registered hoes. Breaking crops prematurely, or through 
 any means other than a hoe (or custom potion), refunds the seed used to plant.
 
-```yaml
+
 this plugin protects against:
-    - Trampling (player or mobs). # toggleable per player
-    - Liquids (through both flowing, placing or dispensers).
-    - Relative block placing.
-    - piston interactions.
-    - entity explosions.
+- Trampling (player or mobs). # toggleable per player
+- Liquids (through both flowing, placing or dispensers).
+- Relative block placing.
+- piston interactions.
+- entity explosions.
 ```
 ---
 
