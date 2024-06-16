@@ -29,7 +29,7 @@ this plugin protects against:
 - Relative block placing.
 - piston interactions.
 - entity explosions.
-```
+
 ---
 
 ## Permissions
