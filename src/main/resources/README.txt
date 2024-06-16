@@ -1,60 +1,75 @@
 # Farming Trial Plugin
 
---- Overview ---
+---
+
+## Overview
 
 The Farming Trial Plugin is designed for the LOTC team to manage and enhance farming mechanics within the game.
 
---- Author ---
+---
+
+## Author
 
 Crunchiest_Leaf
 
---- Description ---
+---
+
+## Description
 
 The plugin provides commands for moderators to manage custom farming potions, reload the plugin configuration, and toggle crop trampling for players.
 
---- Permissions ---
+---
+
+## Permissions
 
 - farmtrial.givepotion: Required to execute the /give_potion command.
 - farmtrial.reload: Required to execute the /farmtrial reload command.
 - farmtrial.toggletrampling: Required to execute the /toggle_trampling command.
 
--- Commands ---
+---
 
---- 1. /give_potion
+## Commands
 
----- Usage
+### 1. /give_potion
+
+#### Usage
 
 /give_potion <user_name> <registered_potion_ID>
 
 - user_name: The username of the player who will receive the potion.
 - registered_potion_ID: The ID of the registered custom potion to be given.
 
----- Example
+#### Example
 
 /give_potion Steve POTION_OF_HARVESTING
 
+---
 
---- 2. /farmtrial reload
+### 2. /farmtrial reload
 
----- Usage
+#### Usage
 
 /farmtrial reload
 
 This command reloads the plugin configuration.
 
---- 3. /toggle_trampling
+---
 
----- Usage
+### 3. /toggle_trampling
+
+#### Usage
 
 /toggle_trampling <user_name>
 
 This command toggles crop trampling for the specified player.
 
----- Example
+#### Example
 
 /toggle_trampling Steve
 
--- Adding New Potions ---
+---
+
+## Adding New Potions
 
 To add new potions, update the loadCustomPotions() method in the main plugin class. Use the following lines of code to register new potions:
 
@@ -68,27 +83,11 @@ potionManager.registerCustomPotion("Potion of Harvesting", "POTION_OF_HARVESTING
 
 These lines register the "Potion of Growth" and the "Potion of Harvesting" with their respective functionalities. Adjust the parameters as needed to create and customize new potions.
 
--- Adding Potion Event Listeners ---
-
-To add additional event listeners for the custom potions, use the onParticleEvent listeners and access the persistent data container keys associated with each custom potion. Here is an example for the "Potion of Growth":
-
-```java
-@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-public void onPotionOfGrowth(ProjectileHitEvent event) {
-    CustomPotion customPotion = processCustomPotion(event, "POTION_OF_GROWTH");
-    if (customPotion != null) {
-        // do stuff
-    }
-}
-```
-
 ---
 
--- Adding Hoe Items and Crops ---
+## Adding Hoe Items and Crops
 
-To add new hoe items or crops to the `farmingData.yml` configuration file, follow the structure outlined below:
-
---- Adding Hoe Items
+### Adding Hoe Items
 
 Hoe items are listed under the `tools` section in the format `<tool>: <tool level>`. Here's how you can add new hoe items:
 
@@ -105,7 +104,7 @@ tools:
 
 Replace your_custom_hoe with the name of your custom hoe item and adjust the tool level as necessary.
 
-Adding Crops
+### Adding Crops
 Crops are defined under the crops section with each crop having its own sub-section containing:
 
 seed: The item name used as a seed for planting the crop.
@@ -114,7 +113,6 @@ multiplier: A float value indicating the yield multiplier for the crop.
 Here’s how to add new crops:
 
 ```yaml
-Copy code
 crops:
   wheat:
     seed: wheat_seeds
@@ -137,10 +135,8 @@ crops:
     drop: custom_crop_item
     multiplier: 0.75  # Example of adding a custom crop.
 ```
-
-
 Replace your_custom_crop, custom_seed_item, custom_crop_item, and adjust the multiplier value accordingly for your custom crop.
 
-Notes
+## Notes
 Ensure that all item names (e.g., wheat_seeds, wheat, etc.) correspond to the correct material names used in your plugin.
 After making changes to the farmingData.yml file, ensure to reload or restart your plugin for the changes to take effect.
