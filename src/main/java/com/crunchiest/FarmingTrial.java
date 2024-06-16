@@ -158,10 +158,22 @@ public class FarmingTrial extends JavaPlugin {
     return potionManager;
   }
 
+  /** 
+   * logInfo: 
+   * console log message, at info level.
+   *
+   * @param message message string
+   */
   public void logInfo(String message){
     LOGGER.log(Level.INFO, message);
   }
   
+  /** 
+   * logWarning: 
+   * console log message, at Warning level.
+   *
+   * @param message message string
+   */
   public void logWarning(String message){
     LOGGER.log(Level.WARNING, message);
   }
