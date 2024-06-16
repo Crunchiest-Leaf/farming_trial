@@ -11,7 +11,12 @@ import com.crunchiest.data.FarmingPotionManager;
 import com.crunchiest.data.PluginConfigManager;
 import com.crunchiest.events.FarmEventListener;
 import com.crunchiest.events.FarmingPotionEventListener;
+
+import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -38,8 +43,8 @@ public class FarmingTrial extends JavaPlugin {
   private PluginConfigManager data;
   private FarmingPotionManager potionManager;
   private FarmingDataManager farmingDataManager;
-  
   FarmingTrial plugin = this;
+  Boolean initialised = false;
   
   /** 
    * onEnable: 
@@ -49,8 +54,8 @@ public class FarmingTrial extends JavaPlugin {
    */
   @Override
   public void onEnable() {
-    reloadPlugin();
-    LOGGER.info("FarmingTrial enabled");
+    loadPlugin();
+    logInfo("FarmingTrial enabled");
   }
   
   /** 
@@ -59,7 +64,7 @@ public class FarmingTrial extends JavaPlugin {
    */
   @Override
   public void onDisable() {
-    LOGGER.info("FarmingTrial disabled");
+    logInfo("FarmingTrial disabled");
   }
 
   /** 
@@ -67,7 +72,7 @@ public class FarmingTrial extends JavaPlugin {
    * loads farming data manager.
    */
   private void loadFarmingData() {
-    farmingDataManager = new FarmingDataManager(plugin);
+    farmingDataManager = new FarmingDataManager(this);
   }
 
   /** 
@@ -75,7 +80,7 @@ public class FarmingTrial extends JavaPlugin {
    * loads config manager.
    */
   private void loadPluginConfigs() {
-    data = new PluginConfigManager(plugin);
+    data = new PluginConfigManager(this);
   }
 
   /** 
@@ -86,9 +91,9 @@ public class FarmingTrial extends JavaPlugin {
     // Custom Potions! Custom Mechanics! Very Cool!
     potionManager = new FarmingPotionManager(plugin);
     //Potion of Growth: Bonemeal potion, makes REGISTERED crops in radius grow to full.
-    potionManager.registerCustomPotion("Potion of Growth", "POTION_OF_GROWTH", true, 5); 
+    potionManager.registerCustomPotion("Potion of Growth", "POTION_OF_GROWTH", true, 2); 
     //Potion of Harvesting: Harvest potion, harvests fully grown REGISTERED crops in radius.
-    potionManager.registerCustomPotion("Potion of Harvesting", "POTION_OF_HARVESTING", true, 5);
+    potionManager.registerCustomPotion("Potion of Harvesting", "POTION_OF_HARVESTING", true, 2);
   }
 
   /** 
@@ -118,10 +123,13 @@ public class FarmingTrial extends JavaPlugin {
    * handles loading of plugin components.
    * used on startup, and when reloading.
    */
-  public void reloadPlugin() {
+  public void loadPlugin() {
+    logInfo(initialised ? "Re-loading Farming Plugin!" : "Loading Farming Plugin!");
+    initialised = true;
     loadPluginConfigs();
     loadFarmingData();
     loadCustomPotions();
+    HandlerList.unregisterAll(this);
     registerEvents();
     registerCommands();
   }
@@ -148,6 +156,14 @@ public class FarmingTrial extends JavaPlugin {
    */
   public FarmingPotionManager getFarmingPotionManager() {
     return potionManager;
+  }
+
+  public void logInfo(String message){
+    LOGGER.log(Level.INFO, message);
+  }
+  
+  public void logWarning(String message){
+    LOGGER.log(Level.WARNING, message);
   }
 
 

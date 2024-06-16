@@ -54,12 +54,14 @@ public class PluginConfigManager {
   * Reloads configuration files.
   */
   public void reloadConfig() {
+    plugin.logInfo("Loading Configs");
     this.playerConfig = YamlConfiguration.loadConfiguration(playerConfigFile);
     this.farmingConfig = YamlConfiguration.loadConfiguration(farmingConfigFile);
     
     // Load defaults from JAR if they don't exist
     loadDefaultConfig("playerData.yml", playerConfig);
     loadDefaultConfig("farmingData.yml", farmingConfig);
+    plugin.logInfo("Configs Loaded");
   }
   
   /**

@@ -1,15 +1,13 @@
 package com.crunchiest.events;
 
+import com.crunchiest.FarmingTrial;
+import com.crunchiest.data.FarmingDataManager;
+import com.crunchiest.data.PluginConfigManager;
+import com.crunchiest.utils.FarmingUtils;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
@@ -17,9 +15,6 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Dispenser;
 import org.bukkit.block.data.type.Farmland;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,11 +30,6 @@ import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-
-import com.crunchiest.FarmingTrial;
-import com.crunchiest.data.FarmingDataManager;
-import com.crunchiest.data.PluginConfigManager;
 
 
 
@@ -83,198 +73,7 @@ public class FarmEventListener implements Listener {
     this.pluginData = plugin.getPluginDataManager();
   }
   
-  /**
-  * dropCount:
-  * Simple dropCount Calculator Method
-  * Takes in tool tier and enchantment
-  * Outputs number of items to drop.
-  * 
-  * @param toolTier    - custom integer value of hoe level
-  * @param enchantTier - custom integer value of hoe level
-  * @return counts - array of crop and seed counts.
-  */
-  
-  private int[] dropCount(int toolTier, int enchantTier) {
-    return new int[]{toolTier + enchantTier, 1 + enchantTier};
-  }
-  
-  /**
-  * FarmDrops:
-  * Method to Carry out Item Drops.
-  * Takes in Item Values and Player Loc
-  * Drops Items at player Loc Naturally.
-  * 
-  * @param crop      - crop type to drop.
-  * @param cropCount - Amount of crop.
-  * @param seed      - seed type to drop.
-  * @param seedCount - Amount of seed.
-  * @param mult      - seed Multiplier.
-  * @param player    - player object.
-  * @return void
-  */
-  private void farmDrops(Material crop, int cropCount, Material seed, int seedCount, float mult, Block block) {
-    World world = block.getWorld();
-    Location loc = block.getLocation();
-    if (seedCount > 0) {
-      world.dropItemNaturally(loc, new ItemStack(seed, 
-          (int) Math.ceil((double) (seedCount * mult))));
-    }
-    if (cropCount > 0) {
-      world.dropItemNaturally(loc, new ItemStack(crop, 
-            (int) Math.ceil((double) (seedCount * mult))));
-    }
-  }
-  
-  /**
-  * Gets the level of a specific enchantment on an item.
-  *
-  * @param item the item stack
-  * @param enchantment the enchantment
-  * @return the level of the enchantment
-  */
-  private int getEnchantmentLevel(ItemStack item, Enchantment enchantment) {
-    return item.getEnchantmentLevel(enchantment);
-  }
-  
-  /**
-  * DamageHoe:
-  * Handles Durability Changes
-  * of hoe used to farm.
-  * Hoe breaks on max durability use.
-  * 
-  * @param hoe    - hoe itemstack object.
-  * @param player - player object.
-  * @return void
-  */
-  private void damageHoe(ItemStack hoe, Player player) {
-    int unbreakingLevel = getEnchantmentLevel(hoe, Enchantment.DURABILITY);
-    if (ThreadLocalRandom.current().nextInt(unbreakingLevel + 1) == 0) {
-      Damageable meta = (Damageable) hoe.getItemMeta();
-      meta.setDamage(meta.getDamage() + 1);
-      if (meta.getDamage() < hoe.getType().getMaxDurability()) {
-        hoe.setItemMeta(meta);
-      } else {
-        player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
-        hoe.setAmount(0);
-      }
-    }
-  }
-  
-  /**
-  * fixHoe:
-  * Handles Durability Changes.
-  * restores durability to max.
-  * (used for random event).
-  * 
-  * @param hoe    - hoe itemstack object.
-  * @param player - player object.
-  * @return void
-  */
-  
-  private void fixHoe(ItemStack hoe, Player player) {
-    Damageable meta = (Damageable) hoe.getItemMeta();
-    meta.setDamage(0);
-    hoe.setItemMeta(meta);
-    player.playSound(player.getLocation(), Sound.BLOCK_BELL_RESONATE, 1, 1);
-    player.playSound(player.getLocation(), Sound.BLOCK_GRINDSTONE_USE, 1, 1);
-  }
-  
-  /**
-  * potatoRain:
-  * Method to make potatoes rain from sky
-  * on farming event roll.
-  * 
-  * @param player - block at given farm location.
-  * @return void
-  */
-  private void potatoRain(Player player) {
-    World world = player.getWorld();
-    Location loc = player.getLocation();
-    Bukkit.getScheduler().runTaskLater(plugin, () -> {
-      for (int i = 0; i < 40; i++) {
-        Location dropLoc = loc.clone().add(ThreadLocalRandom.current().nextInt(-5, 6), i * 10, 
-            ThreadLocalRandom.current().nextInt(-5, 6));
-        Item potato = world.dropItem(dropLoc, new ItemStack(Material.BAKED_POTATO, 1));
-        potato.setPickupDelay(Integer.MAX_VALUE);
-        potato.setTicksLived(5600);
-        potato.setGlowing(true);
-      }
-    }, 10L);
-    world.playSound(loc, Sound.ENTITY_EVOKER_CAST_SPELL, 10, 1);
-  }
-  
-  /**
-  * SpawnNamedEntity:
-  * Method to spawn random entity
-  * on farming event roll.
-  * 
-  * @param locBlock - block at given farm location.
-  * @param entity   - entity type to spawn.
-  * @param name     - name to give entity.
-  * @return void
-  */
-  private void spawnNamedEntity(Block locBlock, EntityType entity, String name) {
-    World world = locBlock.getWorld();
-    Entity villager = world.spawnEntity(locBlock.getLocation(), entity);
-    villager.setCustomName(name);
-  }
-  
-  /**
-  * rangeCheck:
-  * Method for random event
-  * control flow.
-  * 
-  * returns true if range satisfied.
-  * 
-  * @param min - minimum value in range.
-  * @param max - maximum value in range.
-  * @param val - value to test against.
-  * @return boolean
-  */
-  private boolean rangeCheck(int min, int max, int val) {
-    return (val > min && val < max);
-  }
-  
-  /**
-  * randomFarmEvent:
-  * Method to random roll table
-  * a set of possible events.
-  * MobDrops
-  * todo: ItemDrops.
-  * 
-  * @param block  - block at given farm location.
-  * @param player - player object.
-  * @return void
-  */
-  private void randomFarmEvent(Block block, Player player) {
-    int randomNum = ThreadLocalRandom.current().nextInt(0, 1000 + 1);
-    if (rangeCheck(0, 2, randomNum)) {
-      //spawn undead farmer mob
-      player.getWorld().playSound(block.getLocation(), Sound.ENTITY_WITCH_AMBIENT, 10, 1);
-      spawnNamedEntity(block, EntityType.ZOMBIE_VILLAGER, ChatColor.DARK_PURPLE + "Undead Farmer");
-      player.sendMessage(ChatColor.LIGHT_PURPLE 
-          + "Unded Farmer: \"ARGGGHHHHH\"");
-      
-    } else if (rangeCheck(5, 20, randomNum)) {
-      //completely repair hoe
-      fixHoe(player.getInventory().getItemInMainHand(), player);
-      player.sendMessage(ChatColor.GOLD 
-          + "The Farm spirits have Blessed your Hoe with new Life!");
-      
-    } else if (rangeCheck(21, 25, randomNum)) { 
-      //potato rain. rains cooked potatoes.
-      potatoRain(player);
-      player.sendMessage(ChatColor.GOLD 
-          + "The Potato Gods have noticed your Efforts. Potato Rain!");
-      
-    } else if (rangeCheck(26, 30, randomNum)) { 
-      //fish?!
-      player.getWorld().playSound(block.getLocation(), Sound.ENTITY_DOLPHIN_PLAY, 10, 1);
-      spawnNamedEntity(block, EntityType.COD, ChatColor.AQUA + "FISH?!");
-      player.sendMessage(ChatColor.AQUA + "FISH?!");
-      
-    } //else if (rangeCheck(min, max, randomNum))
-  }
+
   
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPlayerTrample(PlayerInteractEvent event) {
@@ -393,7 +192,7 @@ public class FarmEventListener implements Listener {
       if (age < maxAge || farmData.checkHoeExists(heldItemType) == false) {
         // Crop not fully grown or not using a hoe
         if (blockTypeDrop != Material.AIR) {
-          farmDrops(farmData.getCropToDrop(blockTypeDrop), 0, 
+          FarmingUtils.farmDrops(farmData.getCropToDrop(blockTypeDrop), 0, 
                 farmData.getCropToSeed(blockTypeDrop), 1, 
               farmData.getCropMult(blockType), block);
         }
@@ -403,13 +202,13 @@ public class FarmEventListener implements Listener {
         ageable.setAge(0);
         block.setBlockData(ageable);
         
-        int[] dropCounts = dropCount(farmData.getHoeTier(heldItemType), 
-            getEnchantmentLevel(heldItem, Enchantment.LOOT_BONUS_BLOCKS));
-        farmDrops(farmData.getCropToDrop(blockType), dropCounts[0], 
+        int[] dropCounts = FarmingUtils.dropCount(farmData.getHoeTier(heldItemType), 
+            FarmingUtils.getEnchantmentLevel(heldItem, Enchantment.LOOT_BONUS_BLOCKS));
+        FarmingUtils.farmDrops(farmData.getCropToDrop(blockType), dropCounts[0], 
             farmData.getCropToSeed(blockType), 
             dropCounts[1], farmData.getCropMult(blockType), block);
-        randomFarmEvent(block, player);
-        damageHoe(heldItem, player);
+        FarmingUtils.randomFarmEvent(block, player, plugin);
+        FarmingUtils.damageHoe(heldItem, player);
       }
       event.setDropItems(false);
     }
@@ -432,7 +231,8 @@ public class FarmEventListener implements Listener {
         event.setCancelled(true);
         // refund seed
         if (blockType != Material.valueOf("AIR")) {
-          farmDrops(farmData.getCropToDrop(blockType), 0, farmData.getCropToSeed(blockType), 
+          FarmingUtils.farmDrops(farmData.getCropToDrop(blockType), 
+              0, farmData.getCropToSeed(blockType), 
               1, farmData.getCropMult(blockType), block);
         }
         block.setType(Material.AIR, true);
@@ -453,7 +253,7 @@ public class FarmEventListener implements Listener {
     if (block.getType() == Material.FARMLAND && farmData.getCropToDrop(blockAbove.getType()) != null) {
       // refund seed
       if (blockAbove.getType() != Material.valueOf("AIR")) {
-        farmDrops(farmData.getCropToDrop(blockAbove.getType()),     
+        FarmingUtils.farmDrops(farmData.getCropToDrop(blockAbove.getType()),     
             0, farmData.getCropToSeed(blockAbove.getType()), 
             1, farmData.getCropMult(blockAbove.getType()), block);
       }
@@ -502,7 +302,7 @@ public class FarmEventListener implements Listener {
       blockAbove.setBlockData(blockAbove.getBlockData());
       // refund seed
       if (blockAboveType != Material.valueOf("AIR")) {
-        farmDrops(farmData.getCropToDrop(blockAboveType), 
+        FarmingUtils.farmDrops(farmData.getCropToDrop(blockAboveType), 
             0, farmData.getCropToSeed(blockAboveType), 
             1, farmData.getCropMult(blockAboveType), blockAbove);
       }

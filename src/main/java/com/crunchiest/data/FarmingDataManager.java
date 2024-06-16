@@ -43,6 +43,19 @@ public class FarmingDataManager {
   public FarmingDataManager(FarmingTrial plugin) {
     this.plugin = plugin;
     this.data = plugin.getPluginDataManager();
+    reloadData();
+  }
+
+  /** 
+   * reloadData(): 
+   * loads in tool data from yml, putting into hashmap.
+   * for use on plugin reload
+   */
+  public void reloadData() {
+    hoeTiers.clear();
+    cropToSeed.clear();
+    cropToDrop.clear();
+    cropToMult.clear();
     loadTools();
     loadCrops();
   }
@@ -52,11 +65,11 @@ public class FarmingDataManager {
    * loads in tool data from yml, putting into hashmap.
    */
   private void loadTools() {
-    plugin.getLogger().log(Level.INFO, "---------------------");
-    plugin.getLogger().log(Level.INFO, "- - LOADING TOOLS - -");
+    plugin.logInfo("---------------------");
+    plugin.logInfo("- - LOADING TOOLS - -");
     ConfigurationSection tools = data.getFarmingConfig().getConfigurationSection("tools");
     if (tools == null) {
-      plugin.getLogger().log(Level.WARNING, "Section 'tools' not found in configuration.");
+      plugin.logWarning("Section 'tools' not found in configuration.");
       return;
     }
     
@@ -65,13 +78,13 @@ public class FarmingDataManager {
         Material tool = Material.valueOf(key.toUpperCase());
         int value = data.getFarmingConfig().getInt("tools." + key);
         hoeTiers.put(tool, value);
-        plugin.getLogger().log(Level.INFO, "Tool added: " + key);
+        plugin.logInfo("Tool added: " + key);
       } catch (IllegalArgumentException e) {
-        plugin.getLogger().log(Level.WARNING, "Failed to add tool: " + key);
+        plugin.logWarning("Failed to add tool: " + key);
       }
     }
-    plugin.getLogger().log(Level.INFO, "- - TOOLS  LOADED - -");
-    plugin.getLogger().log(Level.INFO, "---------------------");
+    plugin.logInfo("- - TOOLS  LOADED - -");
+    plugin.logInfo("---------------------");
   }
   
   /** 
@@ -79,10 +92,10 @@ public class FarmingDataManager {
    * loads in crops data from yml, putting into hashmaps.
    */
   private void loadCrops() {
-    plugin.getLogger().log(Level.INFO, "- - LOADING CROPS - -");
+    plugin.logInfo("- - LOADING CROPS - -");
     ConfigurationSection crops = data.getFarmingConfig().getConfigurationSection("crops");
     if (crops == null) {
-      plugin.getLogger().log(Level.WARNING, "Section 'crops' not found in configuration.");
+      plugin.logWarning("Section 'crops' not found in configuration.");
       return;
     }
     
@@ -103,13 +116,13 @@ public class FarmingDataManager {
         cropToDrop.put(crop, drop);
         cropToMult.put(crop, mult);
         
-        plugin.getLogger().log(Level.INFO, "Crop added: " + key);
+        plugin.logInfo("Crop added: " + key);
       } catch (Exception e) {
-        plugin.getLogger().log(Level.WARNING, "Failed to add crop: " + key);
+        plugin.logWarning("Failed to add crop: " + key);
       }
     }
-    plugin.getLogger().log(Level.INFO, "- - CROPS  LOADED - -");
-    plugin.getLogger().log(Level.INFO, "---------------------");
+    plugin.logInfo("- - CROPS  LOADED - -");
+    plugin.logInfo("---------------------");
   }
 
   

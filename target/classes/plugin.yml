@@ -1,6 +1,6 @@
 name: FarmingTrial
 main: com.crunchiest.FarmingTrial
-version: 0.3.1
+version: 0.3.2
 api-version: 1.18
 
 commands:

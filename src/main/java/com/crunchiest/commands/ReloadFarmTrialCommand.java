@@ -24,51 +24,53 @@ import org.bukkit.command.CommandSender;
  * 
  */
 
-public class ReloadFarmTrialCommand implements CommandExecutor {
+ public class ReloadFarmTrialCommand implements CommandExecutor {
 
-  FarmingTrial plugin;
+  private FarmingTrial plugin;
 
+  /**
+   * ReloadFarmTrialCommand constructor.
+   *
+   * @param plugin main plugin instance
+   */
   public ReloadFarmTrialCommand(FarmingTrial plugin) {
     this.plugin = plugin;
   }
 
-   /** 
-   *  commandFeedback: 
-   *  custom formatting for farm command feedback.
-   *  sends to specified recipient, with message string.
+  /**
+   * Sends a formatted message to the command sender.
    *
-   *  @param sender - recipient of message.
-   *  @param feedback - string message to be sent.
-   *  @return void       
+   * @param sender  Command sender
+   * @param message Message to send
    */
-  private void commandFeedback(CommandSender sender, String feedback) {
-    sender.sendMessage(ChatColor.RED + feedback);
+  private void commandFeedback(CommandSender sender, String message) {
+    sender.sendMessage(ChatColor.GREEN + message); // Use GREEN for success feedback
   }
   
+  /**
+   * Executes the /farmtrial reload command.
+   *
+   * @param sender Command sender
+   * @param cmd    Command instance
+   * @param label  Command label
+   * @param args   Command arguments
+   * @return true if the command executed successfully, otherwise false
+   */
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
-    /** 
-     *  onCommand, handles event that Farm commands are called
-     *  Locked to moderator only for security purposes.
-     *  permission: farmtrial.toggletrampling
-     */
-   
     if (!sender.hasPermission("farmtrial.reload")) {
+      commandFeedback(sender, "You do not have permission to use this command.");
       return true;
     }
 
-    if (cmd.getName().equalsIgnoreCase("farmtrial")) {
-      if (args[0] == "reload") {
-        commandFeedback(sender, "- - Reloading Plugin - -");
-        plugin.reloadPlugin();
-      }
-    } else {
-      commandFeedback(sender, "usage /farmtrial reload");
+    if (args.length != 1 || !args[0].equalsIgnoreCase("reload")) {
+      commandFeedback(sender, "Usage: /farmtrial reload");
       return true;
     }
-    commandFeedback(sender, "- - Reload Complete - -");
+
+    commandFeedback(sender, "Reloading plugin...");
+    plugin.loadPlugin();
+    commandFeedback(sender, "Plugin reloaded successfully.");
     return true;
   }
-
 }

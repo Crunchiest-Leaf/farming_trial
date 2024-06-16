@@ -4,11 +4,14 @@ import com.crunchiest.FarmingTrial;
 import com.crunchiest.data.FarmingDataManager;
 import com.crunchiest.data.FarmingPotionManager;
 import com.crunchiest.data.FarmingPotionManager.CustomPotion;
+import com.crunchiest.utils.FarmingUtils;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.ThrownPotion;
@@ -105,8 +108,11 @@ public class FarmingPotionEventListener implements Listener {
           Ageable ageable = (Ageable) block.getBlockData();
           ageable.setAge(ageable.getMaximumAge());
           block.setBlockData(ageable);
+          block.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, block.getLocation(), 
+              20, 0.5, 0.5, 0.5, 0.01);
         }
       }
+      origin.getWorld().playSound(origin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, 2);
     }
   }
 
@@ -127,12 +133,19 @@ public class FarmingPotionEventListener implements Listener {
       
       for (Block block : splashedBlocks) {
         Material cropType = block.getType();
-        
         // Check if the block is a crop and age it to max age
         if (farmData.getCropToDrop(cropType) != null) {
-          //harvest block
+          Ageable ageable = (Ageable) block.getBlockData();
+          if (ageable.getAge() == ageable.getMaximumAge()) {
+            FarmingUtils.farmDrops(farmData.getCropToDrop(cropType), 1, 
+                farmData.getCropToSeed(cropType), 1, 
+                farmData.getCropMult(cropType), block);
+            block.setType(Material.AIR);
+            block.setBlockData(block.getBlockData());
+          }
         }
       }
+      origin.getWorld().playSound(origin.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10, 2);
     }
   }
   
@@ -174,4 +187,5 @@ public class FarmingPotionEventListener implements Listener {
     
     return validatedPotion;
   }
+  // ADD MORE LISTENERS FOR MORE POTION EFFECTS!
 }
