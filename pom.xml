@@ -40,14 +40,6 @@
 	</dependencies>
 
 	<build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <includes>
-          <include>**/*</include> <!-- Include all files -->
-        </includes>
-      </resource>
-    </resources>
 		<pluginManagement>
 			<plugins>
 				<plugin>
