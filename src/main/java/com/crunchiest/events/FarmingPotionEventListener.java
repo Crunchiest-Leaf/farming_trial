@@ -52,7 +52,7 @@ public class FarmingPotionEventListener implements Listener {
       PotionEffectUtils.applyGrowthEffect(block, farmData);
     }
     splashedBlocks.get(0).getWorld().playSound(splashedBlocks.get(0).getLocation(),
-        Sound.ENTITY_PLAYER_LEVELUP, 10, 2);
+        Sound.ENTITY_PLAYER_LEVELUP, 1, 2);
   }
   
   /**
@@ -77,6 +77,6 @@ public class FarmingPotionEventListener implements Listener {
       PotionEffectUtils.applyHarvestingEffect(block, farmData);
     }
     splashedBlocks.get(0).getWorld().playSound(splashedBlocks.get(0).getLocation(),
-        Sound.ENTITY_PLAYER_LEVELUP, 10, 2);
+        Sound.ENTITY_PLAYER_LEVELUP, 1, 2);
   }
 }
