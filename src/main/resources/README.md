@@ -93,7 +93,9 @@ Adjust the parameters as needed to create and customize new potions.
 
 ## Adding Potion Event Listeners
 
-To add additional event listeners for the custom potions, use the onParticleEvent listeners and access the persistent data container keys associated with each custom potion. Here is an example for the "Potion of Growth":
+To add additional event listeners for the custom potions, use the onParticleEvent listeners and access the 
+persistent data container keys associated with each custom potion. 
+Here is an example for the "Potion of Growth":
 
 #### Example
 
