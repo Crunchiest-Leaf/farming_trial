@@ -4,7 +4,8 @@
 
 ## Overview
 
-The Farming Trial Plugin is designed for the LOTC team to manage and enhance farming mechanics within the game.
+The Farming Trial Plugin is designed for the LOTC team to manage and 
+enhance farming mechanics within the game.
 
 ---
 
@@ -16,7 +17,8 @@ Crunchiest_Leaf
 
 ## Description
 
-The plugin provides commands for moderators to manage custom farming potions, reload the plugin configuration, and toggle crop trampling for players.
+The plugin provides commands for moderators to manage custom farming potions, 
+reload the plugin configuration, and toggle crop trampling for players.
 
 ---
 
@@ -71,7 +73,8 @@ This command toggles crop trampling for the specified player.
 
 ## Adding New Potions
 
-To add new potions, update the loadCustomPotions() method in the main plugin class. Use the following lines of code to register new potions:
+To add new potions, update the loadCustomPotions() method in the main plugin class. 
+Use the following lines of code to register new potions:
 
 potionManager.registerCustomPotion("<potion display name>", "<UniqueId>", <isSplashPotion?>, <effect block radius>);
 
@@ -81,7 +84,8 @@ potionManager.registerCustomPotion("Potion of Growth", "POTION_OF_GROWTH", true,
 //Potion of Harvesting: Harvest potion, harvests fully grown REGISTERED crops in radius.
 potionManager.registerCustomPotion("Potion of Harvesting", "POTION_OF_HARVESTING", true, 2);
 
-These lines register the "Potion of Growth" and the "Potion of Harvesting" with their respective functionalities. Adjust the parameters as needed to create and customize new potions.
+These lines register the "Potion of Growth" and the "Potion of Harvesting" with their respective functionalities. 
+Adjust the parameters as needed to create and customize new potions.
 
 ---
 
@@ -89,7 +93,8 @@ These lines register the "Potion of Growth" and the "Potion of Harvesting" with 
 
 ### Adding Hoe Items
 
-Hoe items are listed under the `tools` section in the format `<tool>: <tool level>`. Here's how you can add new hoe items:
+Hoe items are listed under the `tools` section in the format `<tool>: <tool level>`. 
+Here's how you can add new hoe items:
 
 ```yaml
 tools:
