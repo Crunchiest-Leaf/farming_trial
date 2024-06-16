@@ -11,11 +11,8 @@ import com.crunchiest.data.FarmingPotionManager;
 import com.crunchiest.data.PluginConfigManager;
 import com.crunchiest.events.FarmEventListener;
 import com.crunchiest.events.FarmingPotionEventListener;
-
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -164,7 +161,7 @@ public class FarmingTrial extends JavaPlugin {
    *
    * @param message message string
    */
-  public void logInfo(String message){
+  public void logInfo(String message) {
     LOGGER.log(Level.INFO, message);
   }
   
@@ -174,7 +171,7 @@ public class FarmingTrial extends JavaPlugin {
    *
    * @param message message string
    */
-  public void logWarning(String message){
+  public void logWarning(String message) {
     LOGGER.log(Level.WARNING, message);
   }
   

@@ -1,11 +1,9 @@
 package com.crunchiest.data;
 
+import com.crunchiest.FarmingTrial;
 import java.util.HashMap;
-import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-
-import com.crunchiest.FarmingTrial;
 
 /**
 * FARMING TRIAL PLUGIN
