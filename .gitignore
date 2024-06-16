@@ -1,14 +1,5 @@
 # Java and Maven specific ignores
-target/
-*.class
-*.log
-*.war
-*.ear
-*.iml
-*.ipr
-*.iws
-*.swp
-*.lst
+target/**
 
 
 # Maven specific ignores
