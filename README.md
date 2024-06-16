@@ -32,8 +32,6 @@ this plugin protects against:
 ```
 ---
 
----
-
 ## Permissions
 
 - farmtrial.givepotion: Required to execute the /give_potion command.
@@ -100,8 +98,6 @@ potionManager.registerCustomPotion("Potion of Harvesting", "POTION_OF_HARVESTING
 
 These lines register the "Potion of Growth" and the "Potion of Harvesting" with their respective functionalities. 
 Adjust the parameters as needed to create and customize new potions.
-
----
 
 ---
 
