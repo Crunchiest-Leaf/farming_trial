@@ -38,6 +38,7 @@ nbdist/
 
 # VS Code specific ignores
 .vscode/
+*.json
 
 # OS specific ignores
 .DS_Store
