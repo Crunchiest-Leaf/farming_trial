@@ -129,7 +129,6 @@ public class FarmingDataManager {
     plugin.logInfo("---------------------");
   }
   
-  
   /** 
   * getCropToSeed:
   * returns seed associated with registered crop.

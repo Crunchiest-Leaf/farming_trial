@@ -64,9 +64,9 @@ public class GiveFarmingPotionCommand implements CommandExecutor {
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     
     /** 
-    *  onCommand, handles event that Farm commands are called
+    *  onCommand, Tab Complete Object, handles give potion command. 
     *  Locked to moderator only for security purposes.
-    *  permission: farmtrial.toggletrampling
+    *  permission: farmtrial.givepotion
     */
     if (args.length < 1) {
       commandFeedback(sender, ChatColor.GREEN 
