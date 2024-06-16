@@ -1,8 +1,10 @@
 package com.crunchiest.data;
 
 import com.crunchiest.FarmingTrial;
-import java.io.*;
-
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -130,7 +132,7 @@ public class PluginConfigManager {
     InputStream inputStream = plugin.getResource(fileName);
     if (inputStream != null) {
       YamlConfiguration defaultConfig =
-      YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
+          YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
       config.setDefaults(defaultConfig);
     }
   }
