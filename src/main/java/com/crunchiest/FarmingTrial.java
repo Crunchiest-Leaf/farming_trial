@@ -39,7 +39,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class FarmingTrial extends JavaPlugin {
   private static final Logger LOGGER = Logger.getLogger("FarmingTrial");
-  private PluginConfigManager data;
+  private PluginConfigManager configManager;
   private FarmingPotionManager potionManager;
   private FarmingDataManager farmingDataManager;
   FarmingTrial plugin = this;
@@ -79,7 +79,7 @@ public class FarmingTrial extends JavaPlugin {
    * loads config manager.
    */
   private void loadPluginConfigs() {
-    data = new PluginConfigManager(this);
+    configManager = new PluginConfigManager(this);
   }
 
   /** 
@@ -147,7 +147,7 @@ public class FarmingTrial extends JavaPlugin {
    * getter for main plugin Data manager.
    */
   public PluginConfigManager getPluginDataManager() {
-    return data;
+    return configManager;
   }
 
   /** 
