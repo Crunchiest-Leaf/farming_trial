@@ -2,8 +2,11 @@ package com.crunchiest.data;
 
 import com.crunchiest.FarmingTrial;
 import java.util.HashMap;
+import java.util.function.BiConsumer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import java.util.function.Consumer;
+
 
 /**
 * FARMING TRIAL PLUGIN
@@ -60,7 +63,7 @@ public class FarmingDataManager {
   
   /** 
   * loadTools: 
-  * loads in tool data from yml, putting into hashmap.
+  * Loads in tool data from yml, putting into hashmap.
   */
   private void loadTools() {
     plugin.logInfo("---------------------");
@@ -70,7 +73,7 @@ public class FarmingDataManager {
       plugin.logWarning("Section 'tools' not found in configuration.");
       return;
     }
-    tools.getKeys(false).forEach(key -> {
+    for (String key : tools.getKeys(false)) {
       try {
         Material tool = Material.matchMaterial(key.toUpperCase());
         if (tool == null) {
@@ -82,14 +85,14 @@ public class FarmingDataManager {
       } catch (Exception e) {
         plugin.logWarning("Failed to add tool: " + key);
       }
-    });
+    }
     plugin.logInfo("- - TOOLS  LOADED - -");
     plugin.logInfo("---------------------");
   }
   
   /** 
   * loadCrops: 
-  * loads in crops data from yml, putting into hashmaps.
+  * Loads in crops data from yml, putting into hashmaps.
   */
   private void loadCrops() {
     plugin.logInfo("- - LOADING CROPS - -");
@@ -105,6 +108,7 @@ public class FarmingDataManager {
         if (crop == null) {
           throw new IllegalArgumentException("Invalid material: " + key);
         }
+        
         String seedKey = "crops." + key + ".seed";
         String dropKey = "crops." + key + ".drop";
         String multKey = "crops." + key + ".multiplier";
@@ -122,7 +126,6 @@ public class FarmingDataManager {
         plugin.logWarning("Failed to add crop: " + key);
       }
     }
-    
     plugin.logInfo("- - CROPS  LOADED - -");
     plugin.logInfo("---------------------");
   }
