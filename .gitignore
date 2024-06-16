@@ -8,26 +8,6 @@ mvnw
 .mvn/wrapper/maven-wrapper.jar
 .mvn/wrapper/maven-wrapper.properties
 
-# IntelliJ IDEA specific ignores
-.idea/
-*.iws
-*.iml
-*.ipr
-out/
-
-# Eclipse specific ignores
-.settings/
-.project
-.classpath
-
-# NetBeans specific ignores
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-
 # VS Code specific ignores
 .vscode/**
 
