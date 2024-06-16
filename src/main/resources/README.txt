@@ -2,7 +2,7 @@
 
 --- Overview ---
 
-The Farming Trial Plugin is designed for the LOTC Java team to manage and enhance farming mechanics within the game.
+The Farming Trial Plugin is designed for the LOTC team to manage and enhance farming mechanics within the game.
 
 --- Author ---
 
