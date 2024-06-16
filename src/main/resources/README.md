@@ -96,7 +96,8 @@ potionManager.registerCustomPotion("Potion of Growth", "POTION_OF_GROWTH", true,
 potionManager.registerCustomPotion("Potion of Harvesting", "POTION_OF_HARVESTING", true, 2);
 ```
 
-These lines register the "Potion of Growth" and the "Potion of Harvesting" with their respective functionalities. 
+These lines register the "Potion of Growth" and the "Potion of Harvesting" with their respective Keys,
+so that they can be utilised by event listeners, to add functionality. 
 Adjust the parameters as needed to create and customize new potions.
 
 ---
