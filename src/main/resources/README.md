@@ -76,6 +76,7 @@ This command toggles crop trampling for the specified player.
 To add new potions, update the loadCustomPotions() method in the main plugin class. 
 Use the following lines of code to register new potions:
 
+```java
 potionManager.registerCustomPotion("<potion display name>", "<UniqueId>", <isSplashPotion?>, <effect block radius>);
 
 //Potion of Growth: Bonemeal potion, makes REGISTERED crops in radius grow to full.
@@ -83,6 +84,7 @@ potionManager.registerCustomPotion("Potion of Growth", "POTION_OF_GROWTH", true,
 
 //Potion of Harvesting: Harvest potion, harvests fully grown REGISTERED crops in radius.
 potionManager.registerCustomPotion("Potion of Harvesting", "POTION_OF_HARVESTING", true, 2);
+```
 
 These lines register the "Potion of Growth" and the "Potion of Harvesting" with their respective functionalities. 
 Adjust the parameters as needed to create and customize new potions.
