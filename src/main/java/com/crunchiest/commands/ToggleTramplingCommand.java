@@ -42,7 +42,6 @@ public class ToggleTramplingCommand implements CommandExecutor {
     this.pluginData = this.plugin.getPluginDataManager();
   }
 
-  
   /** 
    *  commandFeedback: 
    *  custom formatting for farm command feedback.
