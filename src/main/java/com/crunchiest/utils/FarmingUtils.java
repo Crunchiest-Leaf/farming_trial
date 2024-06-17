@@ -18,6 +18,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
+/*
+* FARMING TRIAL PLUGIN
+* ______                   _____    _       _ 
+* |  ___|                 |_   _|  (_)     | |
+* | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
+* |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
+* | || (_| | |  | | | | | | | | |  | | (_| | |
+* \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
+*
+* Author: Crunchiest_Leaf
+*
+* desc: Trial Plugin for LOTC java team
+*       see link for outline.
+* 
+* link: https://docs.google.com/document/d/1zpQpmroUDSb7b6XRdxoifJIs6ig295lM0LOI0gdOvGk/edit#heading=h.h6zgogey5tcq
+* 
+*/
+
 /**
 * Utility methods for various Farming Related functions.
 */
@@ -33,7 +51,6 @@ public class FarmingUtils {
   * @param enchantTier - custom integer value of hoe level
   * @return counts - array of crop and seed counts.
   */
-  
   public static int[] dropCount(int toolTier, int enchantTier) {
     return new int[]{toolTier + enchantTier, 1 + enchantTier};
   }
@@ -49,10 +66,10 @@ public class FarmingUtils {
   * @param seed seed type to drop.
   * @param seedCount Amount of seed.
   * @param mult seed Multiplier.
-  * @param player player object.
-  * @return void
+  * @param block block object.
   */
-  public static void farmDrops(Material crop, int cropCount, Material seed, int seedCount, float mult, Block block) {
+  public static void farmDrops(Material crop, int cropCount, Material seed, 
+      int seedCount, float mult, Block block) {
     World world = block.getWorld();
     Location loc = block.getLocation();
     if (seedCount > 0) {
@@ -84,7 +101,6 @@ public class FarmingUtils {
   *
   * @param hoe hoe itemstack object.
   * @param player player object.
-  * @return void
   */
   public static void damageHoe(ItemStack hoe, Player player) {
     int unbreakingLevel = getEnchantmentLevel(hoe, Enchantment.DURABILITY);
@@ -108,7 +124,6 @@ public class FarmingUtils {
   *
   * @param hoe hoe itemstack object.
   * @param player interacting player.
-  * @return void
   */
   public static void fixHoe(ItemStack hoe, Player player) {
     Damageable meta = (Damageable) hoe.getItemMeta();
@@ -124,7 +139,6 @@ public class FarmingUtils {
   * on farming event roll.
   *
   * @param player block at given farm location.
-  * @return void
   */
   public static void potatoRain(Player player, FarmingTrial plugin) {
     World world = player.getWorld();
@@ -150,7 +164,6 @@ public class FarmingUtils {
   * @param locBlock block at given farm location.
   * @param entity entity type to spawn.
   * @param name name to give entity.
-  * @return void
   */
   public static void spawnNamedEntity(Block locBlock, EntityType entity, String name) {
     World world = locBlock.getWorld();
@@ -183,7 +196,6 @@ public class FarmingUtils {
   * @param block  block at given farm location.
   * @param player interacting player.
   * @param plugin main plugin instance.
-  * @return void
   */
   public static void randomFarmEvent(Block block, Player player, FarmingTrial plugin) {
     int randomNum = ThreadLocalRandom.current().nextInt(0, 1000 + 1);

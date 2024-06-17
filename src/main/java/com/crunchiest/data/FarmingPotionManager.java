@@ -13,24 +13,28 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-/**
- * FARMING TRIAL PLUGIN
- * ______                   _____    _       _ 
- * |  ___|                 |_   _|  (_)     | |
- * | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
- * |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
- * | || (_| | |  | | | | | | | | |  | | (_| | |
- * \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
- *
- * Author: Crunchiest_Leaf
- *
- * desc: Trial Plugin for LOTC java team
- *       see link for outline.
- * 
- * link: https://docs.google.com/document/d/1zpQpmroUDSb7b6XRdxoifJIs6ig295lM0LOI0gdOvGk/edit#heading=h.h6zgogey5tcq
- * 
- */
+/*
+* FARMING TRIAL PLUGIN
+* ______                   _____    _       _ 
+* |  ___|                 |_   _|  (_)     | |
+* | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
+* |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
+* | || (_| | |  | | | | | | | | |  | | (_| | |
+* \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
+*
+* Author: Crunchiest_Leaf
+*
+* desc: Trial Plugin for LOTC java team
+*       see link for outline.
+* 
+* link: https://docs.google.com/document/d/1zpQpmroUDSb7b6XRdxoifJIs6ig295lM0LOI0gdOvGk/edit#heading=h.h6zgogey5tcq
+* 
+*/
 
+/** 
+* FarmingPotionManager: 
+* Handles management of custom potions.
+*/
 public class FarmingPotionManager implements Listener {
   
   private final FarmingTrial plugin;
@@ -169,7 +173,7 @@ public class FarmingPotionManager implements Listener {
     }
     
     /** 
-     * isSplash: 
+     * getPotionRadius: 
      * return radius of potion effect.
      *
      * @return Int splash radius.

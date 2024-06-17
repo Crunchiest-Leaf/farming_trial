@@ -2,13 +2,11 @@ package com.crunchiest.data;
 
 import com.crunchiest.FarmingTrial;
 import java.util.HashMap;
-import java.util.function.BiConsumer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import java.util.function.Consumer;
 
 
-/**
+/*
 * FARMING TRIAL PLUGIN
 * ______                   _____    _       _ 
 * |  ___|                 |_   _|  (_)     | |
@@ -26,6 +24,10 @@ import java.util.function.Consumer;
 * 
 */
 
+/** 
+* FarmingDataManager: 
+* loads in tool/crop/player data from yml.
+*/
 public class FarmingDataManager {
   
   FarmingTrial plugin;

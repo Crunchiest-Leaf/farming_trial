@@ -10,24 +10,29 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-/**
- * FARMING TRIAL PLUGIN
- * ______                   _____    _       _ 
- * |  ___|                 |_   _|  (_)     | |
- * | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
- * |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
- * | || (_| | |  | | | | | | | | |  | | (_| | |
- * \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
- *
- * Author: Crunchiest_Leaf
- *
- * desc: Trial Plugin for LOTC java team
- *       see link for outline.
- * 
- * link: https://docs.google.com/document/d/1zpQpmroUDSb7b6XRdxoifJIs6ig295lM0LOI0gdOvGk/edit#heading=h.h6zgogey5tcq
- * 
- */
+/*
+* FARMING TRIAL PLUGIN
+* ______                   _____    _       _ 
+* |  ___|                 |_   _|  (_)     | |
+* | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
+* |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
+* | || (_| | |  | | | | | | | | |  | | (_| | |
+* \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
+*
+* Author: Crunchiest_Leaf
+*
+* desc: Trial Plugin for LOTC java team
+*       see link for outline.
+* 
+* link: https://docs.google.com/document/d/1zpQpmroUDSb7b6XRdxoifJIs6ig295lM0LOI0gdOvGk/edit#heading=h.h6zgogey5tcq
+* 
+*/
 
+/** 
+ * ToggleTramplingCommand:
+ * command executor for toggling trampling
+ * via command.
+*/
 public class ToggleTramplingCommand implements CommandExecutor {
   private FarmingTrial plugin;
   private PluginConfigManager pluginData;
@@ -56,7 +61,7 @@ public class ToggleTramplingCommand implements CommandExecutor {
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-    /** 
+    /*
      *  onCommand, handles event that Farm commands are called
      *  Locked to moderator only for security purposes.
      *  permission: farmtrial.toggletrampling
@@ -94,8 +99,8 @@ public class ToggleTramplingCommand implements CommandExecutor {
         return true;
       }
     }
-    commandFeedback(sender, "Player '" + args[0] + 
-        "' Crop trampling toggled to: " + String.valueOf(state));
+    commandFeedback(sender, "Player '" + args[0] 
+        + "' Crop trampling toggled to: " + String.valueOf(state));
     return true;
   }
   

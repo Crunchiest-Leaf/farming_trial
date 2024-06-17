@@ -31,15 +31,13 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-
-
-/**
+/*
 * FARMING TRIAL PLUGIN
 * ______                   _____    _       _ 
 * |  ___|                 |_   _|  (_)     | |
 * | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
 * |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
-* | || (_| | |  | | | | | | | | |  | | (_| | |
+* | || (_| | |  | | | | | | | |  | | (_| | |
 * \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
 *
 * Author: Crunchiest_Leaf
@@ -51,13 +49,14 @@ import org.bukkit.inventory.ItemStack;
 * 
 */
 
+/**
+* Listener class to handle events related to farming blocks / actions.
+*/
 public class FarmEventListener implements Listener {
   
   private FarmingTrial plugin;
   private FarmingDataManager farmData;
   private PluginConfigManager pluginData;
-  
-  
   
   // startup constructor - unpacks farming data & puts into hashmaps for custom enums.
   
@@ -73,11 +72,15 @@ public class FarmEventListener implements Listener {
     this.pluginData = plugin.getPluginDataManager();
   }
   
-  
-  
+  /**
+  * Checks if player has trampled Farmland block with a physical interaction;
+  * Then Cancels event, resetting block data to its pre-trampled state.
+  *
+  * @param event the PlayerInteractEvent triggered by the player interaction
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPlayerTrample(PlayerInteractEvent event) {
-    /**
+    /*
     * Checks if player has trampled Farmland block w/ a physical interaction;
     * Then Cancels event, resetting block data to its pre-trampled state.
     * permission: farm_trial.trample.toggle
@@ -113,9 +116,15 @@ public class FarmEventListener implements Listener {
     }
   }
   
+  /**
+  * Checks if mob has trampled Farmland block with a physical interaction;
+  * Then Cancels event, resetting block data to its pre-trampled state.
+  *
+  * @param event the EntityInteractEvent triggered by the entity interaction
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onMobTrample(EntityInteractEvent event) {
-    /**
+    /*
     * Checks if mob has trampled Farmland block w/ a physical interaction;
     * Then Cancels event, resetting block data to its pre-trampled state.
     */
@@ -133,6 +142,11 @@ public class FarmEventListener implements Listener {
     }
   }
   
+  /**
+  * Handles the explosion event to clear affected crops and farmland blocks without dropping items.
+  *
+  * @param event the EntityExplodeEvent triggered by the entity explosion
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onEntityExplode(EntityExplodeEvent event) {
     // Check if the event is already cancelled; if so, return early
@@ -162,6 +176,11 @@ public class FarmEventListener implements Listener {
     }
   }
   
+  /**
+  * Handles the block breaking event to manage crop harvesting and seed refunds.
+  *
+  * @param event the BlockBreakEvent triggered by the block break action
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPlayerHoe(BlockBreakEvent event) {
     // Retrieve the player who triggered the event
@@ -223,10 +242,15 @@ public class FarmEventListener implements Listener {
     }
   }
   
-  
+  /**
+  * Handles the block flow event to prevent water 
+  * from giving player crop drops by cancelling the event.
+  *
+  * @param event the BlockFromToEvent triggered by the block flow action
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onBlockFlowToCrop(BlockFromToEvent event) {
-    /** 
+    /*
     *  onBlockFlowToCrop:
     *  Event Listener to handle flow of block onto crops;
     *  Prevents water from giving player crop drops.
@@ -250,16 +274,22 @@ public class FarmEventListener implements Listener {
     }
   }
   
+  /**
+  * Handles the bucket empty event to stop water/lava place under crops by replacing items dropped.
+  *
+  * @param event the PlayerBucketEmptyEvent triggered by the player using a bucket
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onBucketFarmland(PlayerBucketEmptyEvent event) {
-    /** 
+    /*
     *  onWaterFarmland:
     *  Event Listener to stop water/lava place under crops;
     *  by replacing items dropped.
     */
     Block block = event.getBlockClicked();
     Block blockAbove = block.getRelative(BlockFace.UP);
-    if (block.getType() == Material.FARMLAND && farmData.getCropToDrop(blockAbove.getType()) != null) {
+    if (block.getType() == Material.FARMLAND 
+        && farmData.getCropToDrop(blockAbove.getType()) != null) {
       // refund seed
       if (blockAbove.getType() != Material.valueOf("AIR")) {
         FarmingUtils.farmDrops(farmData.getCropToDrop(blockAbove.getType()),     
@@ -271,9 +301,15 @@ public class FarmEventListener implements Listener {
     }
   }
   
+  /**
+  * Handles the dispense event to stop water/lava place under crops via dispensers,
+  * cancels event if facing crops and using water/lava bucket.
+  *
+  * @param event the BlockDispenseEvent triggered by the dispenser action
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onDispenseLiquid(BlockDispenseEvent event) {
-    /** 
+    /* 
     *  onDispenseLiquid:
     *  Event Listener to stop water/lava place under crops;
     *  via dispensers, cancels event if facing crops and using
@@ -294,10 +330,16 @@ public class FarmEventListener implements Listener {
     }
   }
   
+  /**
+  * Handles the block breaking event to manage crops above the broken block,
+  * cancelling the block break event if it affects crops.
+  *
+  * @param event the BlockBreakEvent triggered by the block break action
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onBlockUnderBreak(BlockBreakEvent event) {  
     
-    /** 
+    /* 
     *  onBlockUnderBreak:
     *  Event Listener to handle break of block below crops;
     *  Prevents block under break from giving player crop drops.
@@ -318,10 +360,15 @@ public class FarmEventListener implements Listener {
     }
   }
   
+  /**
+  * Handles the piston retraction event to prevent pistons from pulling crops or farmland.
+  *
+  * @param event the BlockPistonRetractEvent triggered by the piston retraction
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPistonPullCrop(BlockPistonRetractEvent event) {
     
-    /** 
+    /* 
     *  onPistonPullCrop:
     *  Event Listener to handle piston(pull) breaking crops;
     *  Prevents piston from pulling itself, or other blocks from crops.
@@ -337,10 +384,15 @@ public class FarmEventListener implements Listener {
     }
   }
   
+  /**
+  * Handles the piston extension event to prevent pistons from pushing crops or farmland.
+  *
+  * @param event the BlockPistonExtendEvent triggered by the piston extension
+  */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onPistonPushCrop(BlockPistonExtendEvent event) {
     
-    /** 
+    /* 
     *  onPistonPushCrop:
     *  Event Listener to handle piston(push) breaking crops;
     *  Prevents piston from pushing itself, or other blocks into crops.
@@ -350,13 +402,9 @@ public class FarmEventListener implements Listener {
     for (int i = 0; i < effectedBlocks.size(); i++) {
       Block checked = effectedBlocks.get(i);
       if (farmData.getCropToSeed(checked.getType()) != null 
-           || (checked.getType() == Material.FARMLAND)) {
+          || (checked.getType() == Material.FARMLAND)) {
         event.setCancelled(true);
       }
     }
   }
 }
-
-
-
-

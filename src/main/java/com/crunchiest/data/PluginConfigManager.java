@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-/**
+/*
 * FARMING TRIAL PLUGIN
 * ______                   _____    _       _ 
 * |  ___|                 |_   _|  (_)     | |
@@ -26,6 +26,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 * 
 */
 
+/**
+* PluginConfigManager:
+* handles loading of yml config data.
+*/
 public class PluginConfigManager {
   
   private FarmingTrial plugin;

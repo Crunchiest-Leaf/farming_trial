@@ -12,14 +12,13 @@ import com.crunchiest.data.PluginConfigManager;
 import com.crunchiest.events.FarmEventListener;
 import com.crunchiest.events.FarmingPotionEventListener;
 import com.crunchiest.utils.ResourceUtils;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
-/**
+/*
 * FARMING TRIAL PLUGIN
 * ______                   _____    _       _ 
 * |  ___|                 |_   _|  (_)     | |
@@ -37,6 +36,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 * 
 */
 
+/** 
+ * FarmingTrial: 
+ * main plugin class.
+ */
 public class FarmingTrial extends JavaPlugin {
   private static final Logger LOGGER = Logger.getLogger("FarmingTrial");
   private PluginConfigManager configManager;

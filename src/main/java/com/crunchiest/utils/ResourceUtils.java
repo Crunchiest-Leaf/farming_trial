@@ -7,6 +7,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/*
+* FARMING TRIAL PLUGIN
+* ______                   _____    _       _ 
+* |  ___|                 |_   _|  (_)     | |
+* | |_ __ _ _ __ _ __ ___   | |_ __ _  __ _| |
+* |  _/ _` | '__| '_ ` _ \  | | '__| |/ _` | |
+* | || (_| | |  | | | | | | | | |  | | (_| | |
+* \_| \__,_|_|  |_| |_| |_| \_/_|  |_|\__,_|_|
+*
+* Author: Crunchiest_Leaf
+*
+* desc: Trial Plugin for LOTC java team
+*       see link for outline.
+* 
+* link: https://docs.google.com/document/d/1zpQpmroUDSb7b6XRdxoifJIs6ig295lM0LOI0gdOvGk/edit#heading=h.h6zgogey5tcq
+* 
+*/
+
 /**
 * Utility methods for resource relevant tasks.
 */
